@@ -73,3 +73,11 @@ jetTLS: {}
     # certificate: base64 encoding certificate-file
     # key: base64 encoding key-file
 
+backup: {}
+  # veleroSchedule: "0 1 * * *"
+  # includeNamespaces:
+  #   - production
+  # selector:
+  #   app.kubernetes.io/instance: postgresql
+  # storageLocation: ""
+  # ttl: "720h0m0s"
