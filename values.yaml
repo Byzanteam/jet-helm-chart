@@ -54,3 +54,22 @@ env:
   JET_JWT_PRIVATE_KEY: ""
   SECRET_KEY_BASE: Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU
 
+# Jet ingress route
+jetHosts: []
+  # - localhost
+  # - jet.work
+jetPaths: []
+  # - /api
+  # - /plugin
+  # - /plugin/explorer
+  # - /plugin/graphql.sdl
+jetStripPrefix: ""
+jetTLS: {}
+  # Certificate challenge field
+  # certResolver: jet
+  #
+  # Custom tls certificate
+  # tlsSecret: {}
+    # certificate: base64 encoding certificate-file
+    # key: base64 encoding key-file
+

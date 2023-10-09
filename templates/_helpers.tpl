@@ -69,3 +69,28 @@ Return the jet image name
 {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
 {{- end }}
 
+{{/*
+Host for access rule
+*/}}
+{{- define "jet-helm-chart.jetHosts" -}}
+{{- $hosts := .Values.jetHosts }}
+{{- $orOperator := " || " }}
+{{- $ruleHosts := list }}
+{{- range $_, $host := $hosts }}
+  {{- $ruleHosts = append $ruleHosts (printf "Host(`%s`)" $host) }}
+{{- end }}
+{{- printf "(%s)" (join $orOperator $ruleHosts) }}
+{{- end }}
+
+{{/*
+Path for access rule
+*/}}
+{{- define "jet-helm-chart.jetPaths" -}}
+{{- $paths := .Values.jetPaths }}
+{{- $orOperator := " || " }}
+{{- $rulePaths := list }}
+{{- range $_, $path := $paths }}
+  {{- $rulePaths = append $rulePaths (printf "PathPrefix(`%s`)" $path) }}
+{{- end }}
+{{- printf "(%s)" (join $orOperator $rulePaths) }}
+{{- end }}
