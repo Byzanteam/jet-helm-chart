@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "jet-helm-chart.fullname" . }}-breeze
+  labels:
+    {{- include "jet-helm-chart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.breeze.service.type }}
+  ports:
+    - port: {{ .Values.breeze.service.port }}
+      targetPort: {{ .Values.breeze.service.name }}
+      protocol: TCP
+      name: {{ .Values.breeze.service.name }}
+  selector:
+    {{- include "jet-helm-chart.selectorLabels" . | nindent 4 }}

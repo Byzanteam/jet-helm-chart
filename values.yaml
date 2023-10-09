@@ -92,3 +92,13 @@ corsSettings: {}
   # accessControlAllowOriginList:
   #   - '*'
   # accessControlMaxAge: "100"
+
+breeze:
+  image:
+    repository: jet
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    name: breeze
+    type: ClusterIP
+    port: 50052
