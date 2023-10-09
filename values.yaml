@@ -21,6 +21,7 @@ imageCredentials:
 
 service:
   name: jet
+  type: ClusterIP
   port: 80
 
 resources: {}
