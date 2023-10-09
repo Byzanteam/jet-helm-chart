@@ -81,3 +81,14 @@ backup: {}
   #   app.kubernetes.io/instance: postgresql
   # storageLocation: ""
   # ttl: "720h0m0s"
+
+corsSettings: {}
+  # accessControlAllowHeaders:
+  #   - '*'
+  # accessControlAllowMethods:
+  #   - GET
+  #   - OPTIONS
+  #   - PUT
+  # accessControlAllowOriginList:
+  #   - '*'
+  # accessControlMaxAge: "100"

@@ -2,6 +2,9 @@
 {{- if .Values.jetStripPrefix | empty | not }}
 {{- $webMiddlewares = append $webMiddlewares "strip-prefix" }}
 {{- end }}
+{{- if .Values.corsSettings | empty | not }}
+{{- $webMiddlewares = append $webMiddlewares "cors" }}
+{{- end }}
 {{- $webMiddlewares = append $webMiddlewares "compress" }}
 {{- if .Values.jetTLS | empty | not }}
 {{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
@@ -11,6 +14,9 @@
 {{- $websecureMiddlewares := list }}
 {{- if .Values.jetStripPrefix | empty | not }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "strip-prefix" }}
+{{- end }}
+{{- if .Values.corsSettings | empty | not }}
+{{- $websecureMiddlewares = append $websecureMiddlewares "cors" }}
 {{- end }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "compress" }}
 
