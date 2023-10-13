@@ -14,6 +14,14 @@ breeze:
     name: breeze
     type: ClusterIP
     port: 50052
+traceAware:
+  image:
+    repository: org/traceAware
+    tag: "latest"
+  service:
+    name: traceAware
+    type: ClusterIP
+    port: 80
 
 registry: registry.cn-hangzhou.aliyuncs.com
 

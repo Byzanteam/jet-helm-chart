@@ -1,0 +1,56 @@
+suite: test traceAware deployment
+templates:
+  - templates/traceaware/deployment.yaml
+tests:
+  - it: should render deployment resource
+    asserts:
+      - isKind:
+          of: Deployment
+
+  - it: should set name label, if nameOverride no override is set
+    asserts:
+      - isSubset:
+          path: spec.selector
+          content:
+            matchLabels:
+              app.kubernetes.io/name: jet-helm-chart
+              app.kubernetes.io/instance: RELEASE-NAME
+              app.kubernetes.io/application: traceAware
+
+  - it: should set name label, if set nameOverride
+    set:
+      nameOverride: unittest
+    asserts:
+      - isSubset:
+          path: spec.selector
+          content:
+            matchLabels:
+              app.kubernetes.io/name: unittest
+              app.kubernetes.io/instance: RELEASE-NAME
+              app.kubernetes.io/application: traceAware
+
+  - it: should change image when image value is specified
+    values:
+      - ./values/test.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.cn-hangzhou.aliyuncs.com/org/traceAware:latest
+
+  - it: should set imagePullSecrets if given
+    values:
+      - ./values/test.yaml
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets[0].name
+          value: RELEASE-NAME-jet-helm-chart-docker-registry-secret
+
+  - it: should use exist image pull secret when set
+    set:
+      imagePullSecret:
+        existImageSecrets: docker-registry-secret  
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets[0].name
+          value: docker-registry-secret
+
