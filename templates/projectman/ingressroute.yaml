@@ -1,0 +1,65 @@
+{{- $webMiddlewares := list }}
+{{- if .Values.jetSubpath | empty | not }}
+{{- $webMiddlewares = append $webMiddlewares "strip-prefix" }}
+{{- end }}
+{{- if .Values.corsSettings | empty | not }}
+{{- $webMiddlewares = append $webMiddlewares "cors" }}
+{{- end }}
+{{- $webMiddlewares = append $webMiddlewares "compress" }}
+{{- if .Values.jetTLS | empty | not }}
+{{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
+{{- end }}
+
+{{/* Middlewares for websecure ingress-routes */}}
+{{- $websecureMiddlewares := list }}
+{{- if .Values.jetSubpath | empty | not }}
+{{- $websecureMiddlewares = append $websecureMiddlewares "strip-prefix" }}
+{{- end }}
+{{- if .Values.corsSettings | empty | not }}
+{{- $websecureMiddlewares = append $websecureMiddlewares "cors" }}
+{{- end }}
+{{- $websecureMiddlewares = append $websecureMiddlewares "compress" }}
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "jet-helm-chart.fullname" . }}-project-man-web
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: {{ include "jet-helm-chart.jetHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.build-path" (dict "prefix" .Values.jetSubpath "path" "/")) }}
+      kind: Rule
+      services:
+        - name: {{ include "jet-helm-chart.fullname" . }}-project-man
+          port: {{ .Values.projectMan.service.port }}
+      middlewares:
+        {{- range $webMiddlewares }}
+        - name: {{ include "jet-helm-chart.fullname" $ }}-{{ . }}
+        {{- end}}
+---
+{{- if .Values.jetTLS | empty | not }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ include "jet-helm-chart.fullname" . }}-project-man-websecure
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: {{ include "jet-helm-chart.jetHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.build-path" (dict "prefix" .Values.jetSubpath "path" "/")) }}
+      kind: Rule
+      services:
+        - name: {{ include "jet-helm-chart.fullname" . }}-project-man
+          port: {{ .Values.projectMan.service.port }}
+      middlewares:
+        {{- range $websecureMiddlewares }}
+        - name: {{ include "jet-helm-chart.fullname" $ }}-{{ . }}
+        {{- end}}
+  tls:
+    {{- if .Values.jetTLS.certResolver | empty | not }}
+    certResolver: {{ .Values.jetTLS.certResolver }}
+    {{- else if .Values.jetTLS.tlsSecret | empty | not }}
+    secretName: {{ include "jet-helm-chart.fullname" . }}-jet-tls-secret
+    {{- end }}
+{{- end }}
