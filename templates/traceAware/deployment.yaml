@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jet-helm-chart.fullname" . }}-trace-aware
+  labels:
+    {{- include "jet-helm-chart.traceAware-labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "jet-helm-chart.traceAware-selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "jet-helm-chart.traceAware-selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecret }}
+      {{- if .imageCredentials }}
+      imagePullSecrets:
+        - name: {{ include "jet-helm-chart.fullname" $ }}-docker-registry-secret
+      {{- else if .existImageSecrets }}
+      imagePullSecrets:
+        - name: {{ .existImageSecrets }}
+      {{- end }}
+      {{- end }}
+      containers:
+        - name: {{ include "jet-helm-chart.fullname" . }}-trace-aware
+          image: {{ include "jet-helm-chart.traceAware-image" . }}
+          imagePullPolicy: {{ .Values.traceAware.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "jet-helm-chart.fullname" . }}-env
+          ports:
+            - name: {{ .Values.traceAware.service.name }}
+              containerPort: {{ .Values.traceAware.service.port }}
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

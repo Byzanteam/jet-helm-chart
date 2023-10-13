@@ -9,22 +9,31 @@ replicaCount: 1
 
 projectMan:
   image:
-    repository: jet
+    repository: jet/project_man
     pullPolicy: IfNotPresent
     tag: "latest"
   service:
-    name: jet
+    name: project-man
     type: ClusterIP
     port: 50051
 breeze:
   image:
-    repository: jet
+    repository: jet/breeze
     pullPolicy: IfNotPresent
     tag: "latest"
   service:
     name: breeze
     type: ClusterIP
     port: 50052
+traceAware:
+  image:
+    repository: jet/trace_aware
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    name: trace-aware
+    type: ClusterIP
+    port: 80
 
 registry: registry.cn-hangzhou.aliyuncs.com
 imagePullSecret:
@@ -99,4 +108,3 @@ backup: {}
   #   app.kubernetes.io/instance: postgresql
   # storageLocation: ""
   # ttl: "720h0m0s"
-
