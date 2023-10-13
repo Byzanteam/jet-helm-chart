@@ -3,9 +3,17 @@ projectMan:
     repository: org/projectMan
     tag: "latest"
   service:
-    name: http
+    name: projectMan
     type: ClusterIP
     port: 50051
+breeze:
+  image:
+    repository: org/breeze
+    tag: "latest"
+  service:
+    name: breeze
+    type: ClusterIP
+    port: 50052
 
 registry: registry.cn-hangzhou.aliyuncs.com
 
