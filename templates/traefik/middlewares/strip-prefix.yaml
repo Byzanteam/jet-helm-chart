@@ -1,4 +1,4 @@
-{{- if .Values.jetStripPrefix | empty | not }}
+{{- if .Values.middlewares.jetSubpath }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -6,6 +6,6 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - {{ .Values.jetStripPrefix }}
+      - {{ .Values.middlewares.jetSubpath }}
     forceSlash: true
 {{- end }}

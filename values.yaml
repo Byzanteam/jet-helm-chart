@@ -68,6 +68,20 @@ jetTLS: {}
     # certificate: base64 encoding certificate-file
     # key: base64 encoding key-file
 
+# ingress middlewares
+middlewares:
+  jetSubpath: ""
+  corsSettings: {}
+    # accessControlAllowHeaders:
+    #   - '*'
+    # accessControlAllowMethods:
+    #   - GET
+    #   - OPTIONS
+    #   - PUT
+    # accessControlAllowOriginList:
+    #   - '*'
+    # accessControlMaxAge: "100"
+
 backup: {}
   # veleroSchedule: "0 1 * * *"
   # includeNamespaces:
@@ -76,17 +90,6 @@ backup: {}
   #   app.kubernetes.io/instance: postgresql
   # storageLocation: ""
   # ttl: "720h0m0s"
-
-corsSettings: {}
-  # accessControlAllowHeaders:
-  #   - '*'
-  # accessControlAllowMethods:
-  #   - GET
-  #   - OPTIONS
-  #   - PUT
-  # accessControlAllowOriginList:
-  #   - '*'
-  # accessControlMaxAge: "100"
 
 breeze:
   image:

@@ -73,14 +73,10 @@ Host for access rule
 {{- end }}
 
 {{/*
-Path for access rule
+Build clean path.(//jet -> /jet)
 */}}
-{{- define "jet-helm-chart.jetPaths" -}}
-{{- $paths := .Values.jetPaths }}
-{{- $orOperator := " || " }}
-{{- $rulePaths := list }}
-{{- range $_, $path := $paths }}
-  {{- $rulePaths = append $rulePaths (printf "PathPrefix(`%s`)" $path) }}
+{{- define "jet-helm-chart.build-path" }}
+{{- $subpath := default "/" .prefix -}}
+{{- printf "/%s/%s" $subpath .path | clean -}}
 {{- end }}
-{{- printf "(%s)" (join $orOperator $rulePaths) }}
-{{- end }}
+
