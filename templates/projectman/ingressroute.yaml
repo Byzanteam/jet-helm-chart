@@ -1,21 +1,21 @@
 {{- $webMiddlewares := list }}
-{{- if .Values.jetSubpath | empty | not }}
+{{- if .Values.middlewares.jetSubpath }}
 {{- $webMiddlewares = append $webMiddlewares "strip-prefix" }}
 {{- end }}
-{{- if .Values.corsSettings | empty | not }}
+{{- if .Values.middlewares.corsSettings }}
 {{- $webMiddlewares = append $webMiddlewares "cors" }}
 {{- end }}
 {{- $webMiddlewares = append $webMiddlewares "compress" }}
-{{- if .Values.jetTLS | empty | not }}
+{{- if .Values.jetTLS }}
 {{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
 {{- end }}
 
 {{/* Middlewares for websecure ingress-routes */}}
 {{- $websecureMiddlewares := list }}
-{{- if .Values.jetSubpath | empty | not }}
+{{- if .Values.middlewares.jetSubpath }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "strip-prefix" }}
 {{- end }}
-{{- if .Values.corsSettings | empty | not }}
+{{- if .Values.cmiddlewares.orsSettings }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "cors" }}
 {{- end }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "compress" }}
@@ -38,7 +38,7 @@ spec:
         - name: {{ include "jet-helm-chart.fullname" $ }}-{{ . }}
         {{- end}}
 ---
-{{- if .Values.jetTLS | empty | not }}
+{{- if .Values.jetTLS }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -57,9 +57,9 @@ spec:
         - name: {{ include "jet-helm-chart.fullname" $ }}-{{ . }}
         {{- end}}
   tls:
-    {{- if .Values.jetTLS.certResolver | empty | not }}
+    {{- if .Values.jetTLS.certResolver }}
     certResolver: {{ .Values.jetTLS.certResolver }}
-    {{- else if .Values.jetTLS.tlsSecret | empty | not }}
+    {{- else if .Values.jetTLS.tlsSecret }}
     secretName: {{ include "jet-helm-chart.fullname" . }}-jet-tls-secret
     {{- end }}
 {{- end }}

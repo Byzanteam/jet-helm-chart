@@ -7,22 +7,15 @@ fullnameOverride: ""
 
 replicaCount: 1
 
-image:
-  repository: jet
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
-
-imageCredentials:
-  registry: registry.cn-hangzhou.aliyuncs.com
-  username: deploy-man@skylark
-  password: changeit
-  email: dev@byzan.team
-
-service:
-  name: jet
-  type: ClusterIP
-  port: 80
+projectMan:
+  image:
+    repository: jet
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    name: jet
+    type: ClusterIP
+    port: 80
 
 resources: {}
   # limits:
@@ -58,12 +51,6 @@ env:
 jetHosts: []
   # - localhost
   # - jet.work
-jetPaths: []
-  # - /api
-  # - /plugin
-  # - /plugin/explorer
-  # - /plugin/graphql.sdl
-jetStripPrefix: ""
 jetTLS: {}
   # Certificate challenge field
   # certResolver: jet
