@@ -1,6 +1,6 @@
-suite: test deployment
+suite: test projectman deployment
 templates:
-  - templates/deployment.yaml
+  - templates/projectman/deployment.yaml
 tests:
   - it: should render deployment resource
     asserts:
@@ -15,6 +15,7 @@ tests:
             matchLabels:
               app.kubernetes.io/name: jet-helm-chart
               app.kubernetes.io/instance: RELEASE-NAME
+              app.kubernetes.io/application: projectMan
 
   - it: should set name label, if set nameOverride
     set:
@@ -26,6 +27,7 @@ tests:
             matchLabels:
               app.kubernetes.io/name: unittest
               app.kubernetes.io/instance: RELEASE-NAME
+              app.kubernetes.io/application: projectMan
 
   - it: should change image when image value is specified
     values:
@@ -33,7 +35,7 @@ tests:
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image
-          value: registry.cn-hangzhou.aliyuncs.com/org/image:latest
+          value: registry.cn-hangzhou.aliyuncs.com/org/projectMan:latest
 
   - it: should set imagePullSecrets if given
     values:
@@ -42,4 +44,13 @@ tests:
       - equal:
           path: spec.template.spec.imagePullSecrets[0].name
           value: RELEASE-NAME-jet-helm-chart-docker-registry-secret
+
+  - it: should use exist image pull secret when set
+    set:
+      imagePullSecret:
+        existImageSecrets: docker-registry-secret  
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets[0].name
+          value: docker-registry-secret
 

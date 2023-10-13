@@ -1,6 +1,6 @@
-suite: test jet ingressroute
+suite: test projectman ingressroute
 templates:
-  - templates/traefik/ingressroute.yaml
+  - templates/projectman/ingressroute.yaml
 tests:
   - it: should render match rule right
     values:
@@ -8,7 +8,7 @@ tests:
     asserts:
       - equal:
           path: spec.routes[0].match
-          value: (Host(`jet.work`) || Host(`localhost`)) && (PathPrefix(`/api`) || PathPrefix(`/plugin`))
+          value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet`)
 
   - it: should render middleware by default
     asserts:

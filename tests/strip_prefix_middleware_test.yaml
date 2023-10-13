@@ -1,8 +1,8 @@
-suite: test cors middleware
+suite: test strip prefix middleware
 templates:
   - templates/traefik/middlewares/strip-prefix.yaml
 tests:
-  - it: should render nothing if jetStripPrefix empty
+  - it: should render nothing if jetSubpath empty
     asserts:
       - hasDocuments:
           count: 0
