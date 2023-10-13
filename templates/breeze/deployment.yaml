@@ -3,32 +3,36 @@ kind: Deployment
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-breeze
   labels:
-    {{- include "jet-helm-chart.labels" . | nindent 4 }}
+    {{- include "jet-helm-chart.breeze-labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "jet-helm-chart.selectorLabels" . | nindent 6 }}
+      {{- include "jet-helm-chart.breeze-selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "jet-helm-chart.selectorLabels" . | nindent 8 }}
+        {{- include "jet-helm-chart.breeze-selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.imagePullSecret }}
+      {{- if .imageCredentials }}
       imagePullSecrets:
-        - name: {{ include "jet-helm-chart.fullname" . }}-docker-registry-secret
+        - name: {{ include "jet-helm-chart.fullname" $ }}-docker-registry-secret
+      {{- else if .existImageSecrets }}
+      imagePullSecrets:
+        - name: {{ .existImageSecrets }}
+      {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-breeze
           image: {{ include "jet-helm-chart.breeze-image" . }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command:
-            - /bin/sh
-            - -c
+          imagePullPolicy: {{ .Values.breeze.image.pullPolicy }}
           args:
-            - start
-            - -j
-            - http://{{ include "jet-helm-chart.fullname" . }}:{{ .Values.service.prot }}
-            - -g
-            - 0.0.0.0:{{ .Values.breeze.service.port }}
+            - 'start'
+            - '-j'
+            - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:{{ .Values.projectMan.service.prot }}'
+            - '-g'
+            - '0.0.0.0:{{ .Values.breeze.service.port }}'
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-env

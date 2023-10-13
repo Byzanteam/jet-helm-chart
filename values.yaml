@@ -15,7 +15,16 @@ projectMan:
   service:
     name: jet
     type: ClusterIP
-    port: 80
+    port: 50051
+breeze:
+  image:
+    repository: jet
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    name: breeze
+    type: ClusterIP
+    port: 50052
 
 registry: registry.cn-hangzhou.aliyuncs.com
 imagePullSecret:
@@ -48,9 +57,9 @@ env:
   DYNAMIC_REPO_PASSWORD: postgres
   DYNAMIC_REPO_DATABASE: postgres
   DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_postgres
-  DYNAMIC_REPO_EXPOSED_PORT: 5432
+  DYNAMIC_REPO_EXPOSED_PORT: "5432"
   BREEZE_GRPC_ADDRESS: breeze:50052
-  PROJECT_MAN_GRPC_SERVER_PORT: 50051
+  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
   JET_API_ENDPOINT: http://jet/api/plugin
   JET_JWT_PRIVATE_KEY: ""
   SECRET_KEY_BASE: Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU
@@ -91,12 +100,3 @@ backup: {}
   # storageLocation: ""
   # ttl: "720h0m0s"
 
-breeze:
-  image:
-    repository: jet
-    pullPolicy: IfNotPresent
-    tag: "latest"
-  service:
-    name: breeze
-    type: ClusterIP
-    port: 50052
