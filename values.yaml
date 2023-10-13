@@ -17,6 +17,14 @@ projectMan:
     type: ClusterIP
     port: 80
 
+registry: registry.cn-hangzhou.aliyuncs.com
+imagePullSecret:
+  existImageSecrets: ""
+  imageCredentials: {}
+    # username: deploy-man@skylark
+    # password: changeit
+    # email: dev@byzan.team
+
 resources: {}
   # limits:
   #   cpu: 100m
