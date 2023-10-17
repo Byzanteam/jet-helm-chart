@@ -20,3 +20,15 @@ maintainers:
     email: yangke@jet.work
 # 包含的应用版本
 appVersion: "0.1.0"
+# 添加应用所需依赖包
+dependencies:
+  - name: postgresql
+    version: 12.5.7
+    repository: https://charts.bitnami.com/bitnami
+    alias: jetdb
+    condition: jetdb.enabled
+  - name: postgresql
+    version: 12.5.7
+    repository: https://charts.bitnami.com/bitnami
+    alias: dynamicdb
+    condition: dynamicdb.enabled

@@ -59,19 +59,21 @@ affinity: {}
 env:
   RELEASE_NODE: sname
   RELEASE_COOKIE: cookie
-  CREDENTIAL_SECRET: gBgN6F4183LXKFbiE59K/zq+VuX1m3x2cf1lry+TEdflE3i4IjUYGObOlmyKm2Op
-  PROJECT_MAN_DATABASE_URL: ecto://postgres:postgres@project_man_postgres/postgres
-  DYNAMIC_REPO_HOSTNAME: dynamic_postgres
+  CREDENTIAL_SECRET: ""
+  PROJECT_MAN_DATABASE_URL: ecto://postgres:changeit@jet-postgresql/project_man_prod
+  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
+  DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
   DYNAMIC_REPO_USERNAME: postgres
-  DYNAMIC_REPO_PASSWORD: postgres
-  DYNAMIC_REPO_DATABASE: postgres
-  DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_postgres
+  DYNAMIC_REPO_PASSWORD: changeit
+  DYNAMIC_REPO_DATABASE: dynamic_prod
+  DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
   DYNAMIC_REPO_EXPOSED_PORT: "5432"
   BREEZE_GRPC_ADDRESS: breeze:50052
-  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
   JET_API_ENDPOINT: http://jet/api/plugin
   JET_JWT_PRIVATE_KEY: ""
-  SECRET_KEY_BASE: Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU
+  SECRET_KEY_BASE: ""
+  TRACE_AWARE_DATABASE_URL: ecto://postgres:changeit@jet-postgresql/trace_aware_prod
+  TRACE_AWARE_GRPC_SERVER_PORT: "80"
 
 # Jet ingress route
 jetHosts: []
@@ -108,3 +110,115 @@ backup: {}
   #   app.kubernetes.io/instance: postgresql
   # storageLocation: ""
   # ttl: "720h0m0s"
+
+# dependencies configuration
+# project man db values
+jetdb:
+  enabled: false
+  fullnameOverride: jet-postgresql
+  nameOverride: jet-postgresql
+  architecture: standalone
+  auth:
+    enablePostgresUser: true
+    postgresPassword: changeit
+    database: postgres
+  image:
+    tag: 15.4.0-debian-11-r54
+  metrics:
+    enabled: true
+  primary:
+    extendedConfiguration: |
+      max_connections = 500
+      shared_buffers = 12GB
+      effective_cache_size = 36GB
+      maintenance_work_mem = 2GB
+      checkpoint_completion_target = 0.9
+      wal_buffers = 16MB
+      default_statistics_target = 100
+      random_page_cost = 1.1
+      effective_io_concurrency = 200
+      work_mem = 6291kB
+      huge_pages = try
+      min_wal_size = 1GB
+      max_wal_size = 4GB
+      max_worker_processes = 16
+      max_parallel_workers_per_gather = 4
+      max_parallel_workers = 16
+      max_parallel_maintenance_workers = 4
+    initdb:
+      password: changeit
+      scripts:
+        init-db.sh: |
+          #!/bin/bash
+          set -e
+
+          psql -v ON_ERROR_STOP=1 --username "postgres" --dbname "postgres" <<-EOSQL
+          CREATE DATABASE project_man_prod;
+          CREATE DATABASE trace_aware_prod;
+          EOSQL
+      user: postgres
+    name: production
+    persistence:
+      enabled: false
+    pgHbaConfiguration: |-
+      local   all             all                                     trust
+      host    all             all             127.0.0.1/32            trust
+      host    all             all             ::1/128                 trust
+      host    all             all             all                     scram-sha-256
+  shmVolume:
+    sizeLimit: 5Gi
+
+# dynamic db values
+dynamicdb:
+  enabled: false
+  fullnameOverride: dynamic-postgresql
+  nameOverride: dynamic-postgresql
+  architecture: standalone
+  auth:
+    enablePostgresUser: true
+    postgresPassword: changeit
+    database: postgres
+  image:
+    tag: 15.4.0-debian-11-r54
+  metrics:
+    enabled: true
+  primary:
+    extendedConfiguration: |
+      max_connections = 500
+      shared_buffers = 12GB
+      effective_cache_size = 36GB
+      maintenance_work_mem = 2GB
+      checkpoint_completion_target = 0.9
+      wal_buffers = 16MB
+      default_statistics_target = 100
+      random_page_cost = 1.1
+      effective_io_concurrency = 200
+      work_mem = 6291kB
+      huge_pages = try
+      min_wal_size = 1GB
+      max_wal_size = 4GB
+      max_worker_processes = 16
+      max_parallel_workers_per_gather = 4
+      max_parallel_workers = 16
+      max_parallel_maintenance_workers = 4
+    initdb:
+      password: changeit
+      scripts:
+        init-db.sh: |
+          #!/bin/bash
+          set -e
+
+          psql -v ON_ERROR_STOP=1 --username "postgres" --dbname "postgres" <<-EOSQL
+          CREATE DATABASE dynamic_prod;
+          EOSQL
+      user: postgres
+    name: production
+    persistence:
+      enabled: false
+    pgHbaConfiguration: |-
+      local   all             all                                     trust
+      host    all             all             127.0.0.1/32            trust
+      host    all             all             ::1/128                 trust
+      host    all             all             all                     scram-sha-256
+  shmVolume:
+    sizeLimit: 5Gi
