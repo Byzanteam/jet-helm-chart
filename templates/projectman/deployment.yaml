@@ -23,6 +23,21 @@ spec:
         - name: {{ .existImageSecrets }}
       {{- end }}
       {{- end }}
+      initContainers:
+        - name: init-breeze-service
+          image: busybox:1.28
+          command: 
+            - 'sh'
+            - '-c'
+            - 'until nslookup {{ include "jet-helm-chart.fullname" . }}-breeze.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for breeze; sleep 2; done'
+        {{- if .Values.jetdb.enabled }}
+        - name: init-project-man-db
+          image: byzanteam/psql
+          command:
+            - 'sh'
+            - '-c'
+            - 'until psql -c "SELECT 1" "user=postgres password={{ .Values.jetdb.auth.postgresPassword }} dbname=project_man_prod host={{ .Values.jetdb.fullnameOverride }}"; do echo waiting for project man db; sleep 2; done'
+        {{- end }}
       containers:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
           image: {{ include "jet-helm-chart.projectMan-image" . }}
