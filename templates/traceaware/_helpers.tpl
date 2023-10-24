@@ -1,5 +1,5 @@
 {{/*
-Return the jet image name
+Return the trace aware image name
 */}}
 {{- define "jet-helm-chart.traceAware-image" }}
 {{- $registryName := .Values.registry -}}
