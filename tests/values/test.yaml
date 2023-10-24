@@ -31,7 +31,7 @@ imagePullSecret:
     password: test123456
     email: dev@byzan.team
 
-jetHosts:
+hosts:
   - "jet.work"
   - "localhost"
 middlewares:

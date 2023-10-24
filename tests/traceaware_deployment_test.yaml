@@ -1,6 +1,6 @@
 suite: test traceAware deployment
 templates:
-  - templates/traceaware/deployment.yaml
+  - templates/trace-aware/deployment.yaml
 tests:
   - it: should render deployment resource
     asserts:
