@@ -62,8 +62,8 @@ docker registry auth credenttial
 {{/*
 Host for access rule
 */}}
-{{- define "jet-helm-chart.jetRuleHosts" -}}
-{{- $hosts := .Values.jetHosts }}
+{{- define "jet-helm-chart.ruleHosts" -}}
+{{- $hosts := .Values.hosts }}
 {{- $orOperator := " || " }}
 {{- $ruleHosts := list }}
 {{- range $_, $host := $hosts }}

@@ -28,7 +28,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: {{ include "jet-helm-chart.jetRuleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.build-path" (dict "prefix" .Values.middlewares.jetSubpath "path" "/")) }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.build-path" (dict "prefix" .Values.middlewares.jetSubpath "path" "/")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
@@ -47,7 +47,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: {{ include "jet-helm-chart.jetRuleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.build-path" (dict "prefix" .Values.middlewares.jetSubpath "path" "/")) }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.build-path" (dict "prefix" .Values.middlewares.jetSubpath "path" "/")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man

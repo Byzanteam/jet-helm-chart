@@ -70,7 +70,7 @@ A jet helm chart
 | env.SECRET_KEY_BASE | string | `""` | Phoenix 用于生成会话密码的密钥 |
 | env.TRACE_AWARE_DATABASE_URL | string | `"ecto://postgres:changeit@jet-postgresql/trace_aware_prod"` | Trace Aware 数据库连接地址（格式：`ecto://USER:PASS@HOST/DATABASE`，[参考](https://hexdocs.pm/ecto/3.9.4/Ecto.Repo.html#module-urls)） |
 | env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"80"` | Trace Aware GRPC 服务监听的端口号 |
-| jetHosts | list | `[]` | jet 的访问地址 |
+| hosts | list | `[]` | jet 的访问地址 |
 | jetTLS | object | `{}` | tls 证书 |
 | middlewares.corsSettings | object | `{}` | 跨域配置 |
 | middlewares.jetSubpath | string | `""` | jet 子路径 |
