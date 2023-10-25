@@ -25,5 +25,5 @@ Selector labels for traceAware
 */}}
 {{- define "jet-helm-chart.traceAwareSelectorLabels" -}}
 {{ include "jet-helm-chart.selectorLabels" . }}
-app.kubernetes.io/application: traceAware
+app.kubernetes.io/application: trace-aware
 {{- end }}
