@@ -88,9 +88,11 @@ jetTLS: {}
     # certificate: base64 encoding certificate-file
     # key: base64 encoding key-file
 
-# ingress middlewares
+# Jet subpath
+jetSubpath: ""
+
+# Ingress middlewares
 middlewares:
-  jetSubpath: ""
   corsSettings: {}
     # accessControlAllowHeaders:
     #   - '*'

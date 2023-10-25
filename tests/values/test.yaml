@@ -34,8 +34,8 @@ imagePullSecret:
 hosts:
   - "jet.work"
   - "localhost"
+jetSubpath: /jet
 middlewares:
-  jetSubpath: /jet
   corsSettings:
     accessControlAllowHeaders:
       - 'Date'

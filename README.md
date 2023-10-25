@@ -73,7 +73,7 @@ A jet helm chart
 | hosts | list | `[]` | jet 的访问地址 |
 | jetTLS | object | `{}` | tls 证书 |
 | middlewares.corsSettings | object | `{}` | 跨域配置 |
-| middlewares.jetSubpath | string | `""` | jet 子路径 |
+| jetSubpath | string | `""` | jet 子路径 |
 | backup | object | `{}` | 数据库备份设置 |
 | jetdb.auth.postgresPassword | string | `"changeit"` | postgres 用户密码设置 |
 | jetdb.enabled | bool | `false` | 是否部署 jetdb 数据库 |
