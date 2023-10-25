@@ -1,7 +1,7 @@
 {{/*
 Return the trace aware image name
 */}}
-{{- define "jet-helm-chart.traceAware-image" }}
+{{- define "jet-helm-chart.traceAwareImage" }}
 {{- $registryName := .Values.registry -}}
 {{- $repositoryName := .Values.traceAware.image.repository -}}
 {{- $tag := .Values.traceAware.image.tag | toString -}}
@@ -11,9 +11,9 @@ Return the trace aware image name
 {{/*
 traceAware labels
 */}}
-{{- define "jet-helm-chart.traceAware-labels" -}}
+{{- define "jet-helm-chart.traceAwareLabels" -}}
 helm.sh/chart: {{ include "jet-helm-chart.chart" . }}
-{{ include "jet-helm-chart.traceAware-selectorLabels" . }}
+{{ include "jet-helm-chart.traceAwareSelectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -23,7 +23,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels for traceAware
 */}}
-{{- define "jet-helm-chart.traceAware-selectorLabels" -}}
+{{- define "jet-helm-chart.traceAwareSelectorLabels" -}}
 {{ include "jet-helm-chart.selectorLabels" . }}
 app.kubernetes.io/application: traceAware
 {{- end }}

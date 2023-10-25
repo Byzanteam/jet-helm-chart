@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-trace-aware
   labels:
-    {{- include "jet-helm-chart.traceAware-labels" . | nindent 4 }}
+    {{- include "jet-helm-chart.traceAwareLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "jet-helm-chart.traceAware-selectorLabels" . | nindent 6 }}
+      {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "jet-helm-chart.traceAware-selectorLabels" . | nindent 8 }}
+        {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecret }}
       {{- if .imageCredentials }}
@@ -34,7 +34,7 @@ spec:
         {{- end }}
       containers:
         - name: {{ include "jet-helm-chart.fullname" . }}-trace-aware
-          image: {{ include "jet-helm-chart.traceAware-image" . }}
+          image: {{ include "jet-helm-chart.traceAwareImage" . }}
           imagePullPolicy: {{ .Values.traceAware.image.pullPolicy }}
           envFrom:
             - configMapRef:
