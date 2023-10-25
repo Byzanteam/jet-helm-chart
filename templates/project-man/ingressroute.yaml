@@ -24,6 +24,8 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-project-man-web
+  labels:
+    {{- include "jet-helm-chart.projectManLabels" . | nindent 4 }}
 spec:
   entryPoints:
     - web
@@ -43,6 +45,8 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-project-man-websecure
+  labels:
+    {{- include "jet-helm-chart.projectManLabels" . | nindent 4 }}
 spec:
   entryPoints:
     - websecure
