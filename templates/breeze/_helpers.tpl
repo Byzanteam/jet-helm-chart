@@ -1,7 +1,7 @@
 {{/*
 Return the breeze image name
 */}}
-{{- define "jet-helm-chart.breeze-image" }}
+{{- define "jet-helm-chart.breezeImage" }}
 {{- $registryName := .Values.registry -}}
 {{- $repositoryName := .Values.breeze.image.repository -}}
 {{- $tag := .Values.breeze.image.tag | toString -}}
@@ -11,9 +11,9 @@ Return the breeze image name
 {{/*
 breeze labels
 */}}
-{{- define "jet-helm-chart.breeze-labels" -}}
+{{- define "jet-helm-chart.breezeLabels" -}}
 helm.sh/chart: {{ include "jet-helm-chart.chart" . }}
-{{ include "jet-helm-chart.breeze-selectorLabels" . }}
+{{ include "jet-helm-chart.breezeSelectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -23,7 +23,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels for breeze
 */}}
-{{- define "jet-helm-chart.breeze-selectorLabels" -}}
+{{- define "jet-helm-chart.breezeSelectorLabels" -}}
 {{ include "jet-helm-chart.selectorLabels" . }}
 app.kubernetes.io/application: breeze
 {{- end }}

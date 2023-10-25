@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-breeze
   labels:
-    {{- include "jet-helm-chart.breeze-labels" . | nindent 4 }}
+    {{- include "jet-helm-chart.breezeLabels" . | nindent 4 }}
 spec:
   type: {{ .Values.breeze.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: {{ .Values.breeze.service.name }}
   selector:
-    {{- include "jet-helm-chart.breeze-selectorLabels" . | nindent 4 }}
+    {{- include "jet-helm-chart.breezeSelectorLabels" . | nindent 4 }}

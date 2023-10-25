@@ -3,16 +3,16 @@ kind: Deployment
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-breeze
   labels:
-    {{- include "jet-helm-chart.breeze-labels" . | nindent 4 }}
+    {{- include "jet-helm-chart.breezeLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "jet-helm-chart.breeze-selectorLabels" . | nindent 6 }}
+      {{- include "jet-helm-chart.breezeSelectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "jet-helm-chart.breeze-selectorLabels" . | nindent 8 }}
+        {{- include "jet-helm-chart.breezeSelectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecret }}
       {{- if .imageCredentials }}
@@ -25,7 +25,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}-breeze
-          image: {{ include "jet-helm-chart.breeze-image" . }}
+          image: {{ include "jet-helm-chart.breezeImage" . }}
           imagePullPolicy: {{ .Values.breeze.image.pullPolicy }}
           args:
             - 'start'
