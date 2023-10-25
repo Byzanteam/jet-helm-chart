@@ -25,5 +25,5 @@ Selector labels for project man
 */}}
 {{- define "jet-helm-chart.projectManSelectorLabels" -}}
 {{ include "jet-helm-chart.selectorLabels" . }}
-app.kubernetes.io/application: projectMan
+app.kubernetes.io/application: project-man
 {{- end }}

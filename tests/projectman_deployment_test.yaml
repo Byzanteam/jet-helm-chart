@@ -15,7 +15,7 @@ tests:
             matchLabels:
               app.kubernetes.io/name: jet-helm-chart
               app.kubernetes.io/instance: RELEASE-NAME
-              app.kubernetes.io/application: projectMan
+              app.kubernetes.io/application: project-man
 
   - it: should set name label, if set nameOverride
     set:
@@ -27,7 +27,7 @@ tests:
             matchLabels:
               app.kubernetes.io/name: unittest
               app.kubernetes.io/instance: RELEASE-NAME
-              app.kubernetes.io/application: projectMan
+              app.kubernetes.io/application: project-man
 
   - it: should change image when image value is specified
     values:
