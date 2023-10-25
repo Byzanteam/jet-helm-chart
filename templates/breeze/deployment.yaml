@@ -35,7 +35,7 @@ spec:
             - '0.0.0.0:{{ .Values.breeze.service.port }}'
           envFrom:
             - configMapRef:
-                name: {{ include "jet-helm-chart.fullname" . }}-env
+                name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
           ports:
             - name: {{ .Values.breeze.service.name }}
               containerPort: {{ .Values.breeze.service.port }}

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "jet-helm-chart.labels" . | nindent 4 }}
+  name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
+data:
+  {{- Values.breeze.env | toYaml | nindent 2}}
+

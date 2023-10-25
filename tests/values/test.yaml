@@ -14,6 +14,22 @@ breeze:
     name: breeze
     type: ClusterIP
     port: 50052
+  env:
+    RELEASE_NODE: sname
+    RELEASE_COOKIE: cookie
+    CREDENTIAL_SECRET: gBgN6F4183LXKFbiE59K/zq+VuX1m3x2cf1lry+TEdflE3i4IjUYGObOlmyKm2Op
+    PROJECT_MAN_DATABASE_URL: ecto://postgres:postgres@project_man_postgres/postgres
+    DYNAMIC_REPO_HOSTNAME: dynamic_postgres
+    DYNAMIC_REPO_USERNAME: postgres
+    DYNAMIC_REPO_PASSWORD: postgres
+    DYNAMIC_REPO_DATABASE: postgres
+    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_postgres
+    DYNAMIC_REPO_EXPOSED_PORT: 5432
+    BREEZE_GRPC_ADDRESS: breeze:50052
+    PROJECT_MAN_GRPC_SERVER_PORT: 50051
+    JET_API_ENDPOINT: http://jet/api/plugin
+    JET_JWT_PRIVATE_KEY: ""
+    SECRET_KEY_BASE: Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU
 traceAware:
   image:
     repository: org/traceAware
