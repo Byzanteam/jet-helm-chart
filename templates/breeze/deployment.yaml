@@ -30,7 +30,7 @@ spec:
           args:
             - 'start'
             - '-j'
-            - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:{{ .Values.projectMan.service.prot }}'
+            - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:{{ .Values.projectMan.service.port }}'
             - '-g'
             - '0.0.0.0:{{ .Values.breeze.service.port }}'
           envFrom:
