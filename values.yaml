@@ -102,10 +102,8 @@ jetTLS: {}
   # Certificate challenge field
   # certResolver: jet
   #
-  # Custom tls certificate
-  # tlsSecret: {}
-    # certificate: base64 encoding certificate-file
-    # key: base64 encoding key-file
+  # Custom tls certificate secret name
+  # tlsSecretName: ""
 
 # Jet subpath
 jetSubpath: ""

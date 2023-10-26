@@ -63,7 +63,7 @@ spec:
   tls:
     {{- if .Values.jetTLS.certResolver }}
     certResolver: {{ .Values.jetTLS.certResolver }}
-    {{- else if .Values.jetTLS.tlsSecret }}
-    secretName: {{ include "jet-helm-chart.fullname" . }}-jet-tls-secret
+    {{- else if .Values.jetTLS.tlsSecretName }}
+    secretName: {{ .Values.jetTLS.tlsSecretName }}
     {{- end }}
 {{- end }}

@@ -67,9 +67,7 @@ middlewares:
     accessControlMaxAge: "200"
 
 jetTLS:
-  tlsSecret:
-    certificate: dGVzdC1jaGFydC1jZXJ0LWZpbGUK
-    key: dGVzdC1jaGFydC1rZXktZmlsZQo=
+  tlsSecretName: jet-secret
 
 env:
   RELEASE_NODE: sname

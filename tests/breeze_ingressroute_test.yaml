@@ -50,7 +50,7 @@ tests:
       - isSubset:
           path: spec.tls
           content:
-            secretName: RELEASE-NAME-jet-helm-chart-jet-tls-secret
+            secretName: jet-secret
         documentIndex: 1
 
   - it:  should render tls certResolver if set jetTLS
