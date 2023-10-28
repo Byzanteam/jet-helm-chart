@@ -5,5 +5,5 @@ metadata:
     {{- include "jet-helm-chart.labels" . | nindent 4 }}
   name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
 data:
-  {{- Values.breeze.env | toYaml | nindent 2}}
+  {{- .Values.breeze.env | toYaml | nindent 2}}
 

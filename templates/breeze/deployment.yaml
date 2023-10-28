@@ -33,6 +33,37 @@ spec:
             - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:{{ .Values.projectMan.service.port }}'
             - '-g'
             - '0.0.0.0:{{ .Values.breeze.service.port }}'
+          env:
+            - name: CREDENTIAL_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jet-helm-chart.fullname" . }}-env
+                  key: credential_secret
+            - name: DYNAMIC_REPO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jet-helm-chart.fullname" . }}-env
+                  key: dynamic_repo_password
+            - name: JET_JWT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jet-helm-chart.fullname" . }}-env
+                  key: jet_jwt_private_key
+            - name: SECRET_KEY_BASE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jet-helm-chart.fullname" . }}-env
+                  key: secret_key_base
+            - name: TRACE_AWARE_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jet-helm-chart.fullname" . }}-env
+                  key: trace_aware_database_url
+            - name: PROJECT_MAN_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "jet-helm-chart.fullname" . }}-env
+                  key: project_man_database_url
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
