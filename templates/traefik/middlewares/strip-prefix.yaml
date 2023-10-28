@@ -1,4 +1,4 @@
-{{- if .Values.jetSubpath }}
+{{- if .Values.subpath }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -6,6 +6,6 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - {{ .Values.jetSubpath }}
+      - {{ .Values.subpath }}
     forceSlash: true
 {{- end }}

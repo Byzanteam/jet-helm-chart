@@ -108,7 +108,7 @@ jetTLS: {}
   # tlsSecretName: ""
 
 # Jet subpath
-jetSubpath: ""
+subpath: ""
 
 # Ingress middlewares
 middlewares:

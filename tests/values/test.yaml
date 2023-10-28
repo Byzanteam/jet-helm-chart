@@ -50,7 +50,7 @@ imagePullSecret:
 hosts:
   - "jet.work"
   - "localhost"
-jetSubpath: /jet
+subpath: /jet
 middlewares:
   corsSettings:
     accessControlAllowHeaders:
