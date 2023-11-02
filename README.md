@@ -18,7 +18,7 @@ A jet helm chart
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | jetdb(postgresql) | 12.5.7 |
+| https://charts.bitnami.com/bitnami | projectmandb(postgresql) | 12.5.7 |
 | https://charts.bitnami.com/bitnami | dynamicdb(postgresql) | 12.5.7 |
 
 ## Values
@@ -86,14 +86,14 @@ A jet helm chart
 | subpath | string | `""` | jet 子路径 |
 | middlewares.corsSettings | object | `{}` | 跨域配置 |
 | backup | object | `{}` | 数据库备份设置 |
-| jetdb.auth.postgresPassword | string | `"changeit"` | postgres 用户密码设置 |
-| jetdb.enabled | bool | `false` | 是否部署 jetdb 数据库 |
-| jetdb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
-| jetdb.primary.initdb.password | string | `"changeit"` | 指定 PostgreSQL 密码以执行 initdb 脚本 |
-| jetdb.primary.initdb.scripts | string | `{}` | initdb 脚本字典 |
-| jetdb.primary.persistence.enabled | bool | `false` | 使用PVC启用PostgreSQL主数据持久化 |
-| jetdb.primary.pgHbaConfiguration | string | `""` | PostgreSQL 主客户端身份验证配置 |
-| jetdb.shmVolume.sizeLimit | string | `"5Gi"` | 设置此项以启用 shm tmpfs 的大小限制 |
+| projectmandb.auth.postgresPassword | string | `"changeit"` | postgres 用户密码设置 |
+| projectmandb.enabled | bool | `false` | 是否部署 projectmandb 数据库 |
+| projectmandb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
+| projectmandb.primary.initdb.password | string | `"changeit"` | 指定 PostgreSQL 密码以执行 initdb 脚本 |
+| projectmandb.primary.initdb.scripts | string | `{}` | initdb 脚本字典 |
+| projectmandb.primary.persistence.enabled | bool | `false` | 使用PVC启用PostgreSQL主数据持久化 |
+| projectmandb.primary.pgHbaConfiguration | string | `""` | PostgreSQL 主客户端身份验证配置 |
+| projectmandb.shmVolume.sizeLimit | string | `"5Gi"` | 设置此项以启用 shm tmpfs 的大小限制 |
 | dynamicdb.auth.postgresPassword | string | `"changeit"` | postgres 用户密码设置 |
 | dynamicdb.enabled | bool | `false` | 是否部署 dynamicdb 数据库 |
 | dynamicdb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
@@ -223,13 +223,14 @@ jetTLS:
 ### 1. 数据库依赖启用
 
 ```yaml
-jetdb:
+projectmandb:
   enabled: true
 dynamicdb:
   enabled: true
 ```
 
-> ❗️[数据库详细配置](https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters)
+> ❗️使用数据库时请配置数据库持久化
+> [数据库详细配置](https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters)
 
 ### 2. 应用跨域设置
 

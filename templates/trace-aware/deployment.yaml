@@ -24,13 +24,13 @@ spec:
       {{- end }}
       {{- end }}
       initContainers:
-        {{- if .Values.jetdb }}
+        {{- if .Values.projectmandb }}
         - name: init-trace-aware-db
           image: byzanteam/psql
           command:
             - 'sh'
             - '-c'
-            - 'until psql -c "SELECT 1" "user=postgres password={{ .Values.jetdb.auth.postgresPassword }} dbname=trace_aware_prod host={{ .Values.jetdb.fullnameOverride }}"; do echo waiting for trace aware db; sleep 2; done'
+            - 'until psql -c "SELECT 1" "user=postgres password={{ .Values.projectmandb.auth.postgresPassword }} dbname=trace_aware_prod host={{ .Values.projectmandb.fullnameOverride }}"; do echo waiting for trace aware db; sleep 2; done'
         {{- end }}
       containers:
         - name: {{ include "jet-helm-chart.fullname" . }}-trace-aware

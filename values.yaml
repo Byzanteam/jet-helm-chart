@@ -128,7 +128,7 @@ backup: {}
 
 # dependencies configuration
 # project man db values
-jetdb:
+projectmandb:
   enabled: false
   fullnameOverride: jet-postgresql
   nameOverride: jet-postgresql
