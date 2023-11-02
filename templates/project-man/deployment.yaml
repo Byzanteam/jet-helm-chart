@@ -70,7 +70,7 @@ spec:
                   key: project_man_database_url
           envFrom:
             - configMapRef:
-                name: {{ include "jet-helm-chart.fullname" . }}-env
+                name: {{ include "jet-helm-chart.fullname" . }}-project-man-env
           ports:
             - name: {{ .Values.projectMan.service.name }}
               containerPort: {{ .Values.projectMan.service.port }}
