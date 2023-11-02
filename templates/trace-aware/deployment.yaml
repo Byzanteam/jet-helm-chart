@@ -14,14 +14,9 @@ spec:
       labels:
         {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecret }}
-      {{- if .imageCredentials }}
+      {{- if .Values.existImageSecrets }}
       imagePullSecrets:
-        - name: {{ include "jet-helm-chart.fullname" $ }}-docker-registry-secret
-      {{- else if .existImageSecrets }}
-      imagePullSecrets:
-        - name: {{ .existImageSecrets }}
-      {{- end }}
+        - name: {{ .Values.existImageSecrets }}
       {{- end }}
       initContainers:
         {{- if .Values.projectmandb }}
