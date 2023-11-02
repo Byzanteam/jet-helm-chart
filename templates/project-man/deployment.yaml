@@ -76,16 +76,16 @@ spec:
               containerPort: {{ .Values.projectMan.service.port }}
               protocol: TCP
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+            {{- toYaml .Values.projectMan.resources | nindent 12 }}
+      {{- with .Values.projectMan.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.projectMan.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.projectMan.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

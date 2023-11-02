@@ -67,16 +67,16 @@ spec:
               containerPort: {{ .Values.breeze.service.port }}
               protocol: TCP
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+            {{- toYaml .Values.breeze.resources | nindent 12 }}
+      {{- with .Values.breeze.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.breeze.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.breeze.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

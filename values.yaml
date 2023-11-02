@@ -12,6 +12,10 @@ projectMan:
     repository: jet/project_man
     pullPolicy: IfNotPresent
     tag: "latest"
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
   service:
     name: project-man
     type: ClusterIP
@@ -21,6 +25,10 @@ breeze:
     repository: jet/breeze
     pullPolicy: IfNotPresent
     tag: "latest"
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
   service:
     name: breeze
     type: ClusterIP
@@ -37,12 +45,15 @@ breeze:
     BREEZE_GRPC_ADDRESS: breeze:50052
     JET_API_ENDPOINT: http://jet/api/plugin
     TRACE_AWARE_GRPC_SERVER_PORT: "80"
-
 traceAware:
   image:
     repository: jet/trace_aware
     pullPolicy: IfNotPresent
     tag: "latest"
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
   service:
     name: trace-aware
     type: ClusterIP
@@ -51,18 +62,6 @@ traceAware:
 registry: registry.cn-hangzhou.aliyuncs.com
 
 existImageSecret: ""
-
-resources: {}
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-nodeSelector: {}
-tolerations: []
-affinity: {}
 
 # Jet environment variable
 env:
