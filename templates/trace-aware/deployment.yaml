@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "jet-helm-chart.traceAwareLabels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.traceAware.replicaCount }}
   selector:
     matchLabels:
       {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 6 }}
