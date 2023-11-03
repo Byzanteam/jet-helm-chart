@@ -28,10 +28,16 @@ spec:
         {{- if .Values.projectmandb.enabled }}
         - name: init-project-man-db
           image: byzanteam/psql
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.projectmandb.fullnameOverride }}
+                  key: postgres-password
           command:
             - 'sh'
             - '-c'
-            - 'until psql -c "SELECT 1" "user=postgres password={{ .Values.projectmandb.auth.postgresPassword }} dbname=project_man_prod host={{ .Values.projectmandb.fullnameOverride }}"; do echo waiting for project man db; sleep 2; done'
+            - 'until psql -c "SELECT 1" "user=postgres dbname=project_man_prod host={{ .Values.projectmandb.fullnameOverride }}"; do echo waiting for project man db; sleep 2; done'
         {{- end }}
       containers:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
