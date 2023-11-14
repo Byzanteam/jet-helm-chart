@@ -5,5 +5,9 @@ metadata:
     {{- include "jet-helm-chart.labels" . | nindent 4 }}
   name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
 data:
-  {{- .Values.breeze.env | toYaml | nindent 2}}
+  {{- tpl (.Values.breeze.env | toYaml | nindent 2) . }}
+  BREEZE_GRPC_ADDRESS: {{ include "jet-helm-chart.breezeAddress" . }}
+  JET_API_ENDPOINT: {{ include "jet-helm-chart.jetApiEndpoint" . }}
+  DYNAMIC_REPO_USERNAME: postgres
+  DYNAMIC_REPO_EXPOSED_PORT: "5432"
 

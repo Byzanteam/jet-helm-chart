@@ -15,17 +15,11 @@ projectMan:
     pullPolicy: IfNotPresent
     tag: "latest"
   env:
-    RELEASE_NODE: sname
-    RELEASE_COOKIE: cookie
-    PROJECT_MAN_GRPC_SERVER_PORT: "50051"
-    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
-    DYNAMIC_REPO_USERNAME: postgres
+    PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
+    DYNAMIC_REPO_HOSTNAME: "{{ .Values.dynamicdb.fullnameOverride }}"
     DYNAMIC_REPO_DATABASE: dynamic_prod
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
-    BREEZE_GRPC_ADDRESS: breeze:50052
-    JET_API_ENDPOINT: http://jet/api/plugin
-    TRACE_AWARE_GRPC_SERVER_PORT: "80"
+    TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
@@ -50,22 +44,22 @@ breeze:
     type: ClusterIP
     port: 50052
   env:
-    RELEASE_NODE: sname
-    RELEASE_COOKIE: cookie
-    PROJECT_MAN_GRPC_SERVER_PORT: "50051"
-    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
-    DYNAMIC_REPO_USERNAME: postgres
+    PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
+    DYNAMIC_REPO_HOSTNAME: "{{ .Values.dynamicdb.fullnameOverride }}"
     DYNAMIC_REPO_DATABASE: dynamic_prod
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
-    BREEZE_GRPC_ADDRESS: breeze:50052
-    JET_API_ENDPOINT: http://jet/api/plugin
-    TRACE_AWARE_GRPC_SERVER_PORT: "80"
+    TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
 traceAware:
   image:
     repository: jet/trace_aware
     pullPolicy: IfNotPresent
     tag: "latest"
+  env:
+    PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
+    DYNAMIC_REPO_HOSTNAME: "{{ .Values.dynamicdb.fullnameOverride }}"
+    DYNAMIC_REPO_DATABASE: dynamic_prod
+    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
@@ -80,15 +74,6 @@ traceAware:
 env:
   RELEASE_NODE: sname
   RELEASE_COOKIE: cookie
-  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
-  DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
-  DYNAMIC_REPO_USERNAME: postgres
-  DYNAMIC_REPO_DATABASE: dynamic_prod
-  DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-  DYNAMIC_REPO_EXPOSED_PORT: "5432"
-  BREEZE_GRPC_ADDRESS: breeze:50052
-  JET_API_ENDPOINT: http://jet/api/plugin
-  TRACE_AWARE_GRPC_SERVER_PORT: "80"
 
 secret:
   credential_secret: ""

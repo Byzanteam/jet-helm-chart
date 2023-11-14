@@ -71,6 +71,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-env
+            - configMapRef:
+                name: {{ include "jet-helm-chart.fullname" . }}-trace-aware-env
           ports:
             - name: {{ .Values.traceAware.service.name }}
               containerPort: {{ .Values.traceAware.service.port }}

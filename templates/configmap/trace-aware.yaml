@@ -3,9 +3,9 @@ kind: ConfigMap
 metadata:
   labels:
     {{- include "jet-helm-chart.labels" . | nindent 4 }}
-  name: {{ include "jet-helm-chart.fullname" . }}-project-man-env
+  name: {{ include "jet-helm-chart.fullname" . }}-trace-aware-env
 data:
-  {{- tpl (.Values.projectMan.env | toYaml | nindent 2) . }}
+  {{- tpl (.Values.traceAware.env | toYaml | nindent 2) . }}
   BREEZE_GRPC_ADDRESS: {{ include "jet-helm-chart.breezeAddress" . }}
   JET_API_ENDPOINT: {{ include "jet-helm-chart.jetApiEndpoint" . }}
   DYNAMIC_REPO_USERNAME: postgres
