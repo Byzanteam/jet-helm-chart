@@ -8,7 +8,6 @@ fullnameOverride: ""
 registry: registry.cn-hangzhou.aliyuncs.com
 existImageSecret: ""
 
-
 projectMan:
   image:
     repository: jet/project_man
