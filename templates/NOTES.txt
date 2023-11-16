@@ -1,5 +1,5 @@
 Please visit the url:
-{{- $path := (.Values.jetSubpath | default "/") }}
+{{- $path := (.Values.jetSubpath | default "") }}
 {{- range $_, $host := .Values.hosts }}
   https://{{ $host }}{{ $path }}
   https://{{ $host }}{{ $path }}/breeze
