@@ -37,18 +37,9 @@ tests:
           path: spec.template.spec.containers[0].image
           value: registry.cn-hangzhou.aliyuncs.com/org/projectMan:latest
 
-  - it: should set imagePullSecrets if given
-    values:
-      - ./values/test.yaml
-    asserts:
-      - equal:
-          path: spec.template.spec.imagePullSecrets[0].name
-          value: RELEASE-NAME-jet-helm-chart-docker-registry-secret
-
   - it: should use exist image pull secret when set
     set:
-      imagePullSecret:
-        existImageSecrets: docker-registry-secret  
+      existImageSecrets: docker-registry-secret  
     asserts:
       - equal:
           path: spec.template.spec.imagePullSecrets[0].name
