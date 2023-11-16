@@ -126,9 +126,10 @@ projectmandb:
   nameOverride: jet-postgresql
   architecture: standalone
   auth:
-    enablePostgresUser: true
-    postgresPassword: changeit
     database: postgres
+    existingSecret: dependencies-db-secret
+    secretKeys:
+      adminPasswordKey: project-man-password
   image:
     tag: 15.4.0-debian-11-r54
   metrics:
@@ -153,7 +154,6 @@ projectmandb:
       max_parallel_workers = 16
       max_parallel_maintenance_workers = 4
     initdb:
-      password: changeit
       scripts:
         init-db.sh: |
           #!/bin/bash
@@ -163,7 +163,6 @@ projectmandb:
           CREATE DATABASE project_man_prod;
           CREATE DATABASE trace_aware_prod;
           EOSQL
-      user: postgres
     name: production
     persistence:
       enabled: false
@@ -182,9 +181,10 @@ dynamicdb:
   nameOverride: dynamic-postgresql
   architecture: standalone
   auth:
-    enablePostgresUser: true
-    postgresPassword: changeit
     database: postgres
+    existingSecret: dependencies-db-secret
+    secretKeys:
+      adminPasswordKey: dynamicdb-password
   image:
     tag: 15.4.0-debian-11-r54
   metrics:
@@ -209,7 +209,6 @@ dynamicdb:
       max_parallel_workers = 16
       max_parallel_maintenance_workers = 4
     initdb:
-      password: changeit
       scripts:
         init-db.sh: |
           #!/bin/bash
@@ -218,7 +217,6 @@ dynamicdb:
           psql -v ON_ERROR_STOP=1 --username "postgres" --dbname "postgres" <<-EOSQL
           CREATE DATABASE dynamic_prod;
           EOSQL
-      user: postgres
     name: production
     persistence:
       enabled: false
