@@ -27,14 +27,21 @@ A jet helm chart
 |-----|------|---------|-------------|
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
-| replicaCount | int | `1` |  |
-| resources | object | `{}` |  |
-| nodeSelector | object | `{}` |  |
-| tolerations | list | `[]` |  |
-| affinity | object | `{}` |  |
-| projectMan.image.pullPolicy | string | `"IfNotPresent"` |  |
+| registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址  |
+| existImageSecrets | string | `""` | 已存在的镜像拉取凭证 secret |
+| projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略  |
 | projectMan.image.repository | string | `"jet/project_man"` |  |
 | projectMan.image.tag | string | `"latest"` |  |
+| projectMan.env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
+| projectMan.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
+| projectMan.env.DYNAMIC_REPO_HOSTNAME | string | `"{{ .Values.dynamicdb.fullnameOverride }}"` | 项目数据库主机名 |
+| projectMan.env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"{{ .Values.projectMan.service.port }}"` | GRPC 服务监听的端口号 |
+| projectMan.env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"{{ .Values.traceAware.service.port }}"` | Trace Aware GRPC 服务监听的端口号 |
+| projectMan.replicaCount | int | `1` |  |
+| projectMan.resources | object | `{}` |  |
+| projectMan.nodeSelector | object | `{}` |  |
+| projectMan.tolerations | list | `[]` |  |
+| projectMan.affinity | object | `{}` |  |
 | projectMan.service.name | string | `"project-man"` |  |
 | projectMan.service.port | int | `50051` |  |
 | projectMan.service.type | string | `"ClusterIP"` |  |
@@ -44,37 +51,34 @@ A jet helm chart
 | breeze.service.name | string | `"breeze"` |  |
 | breeze.service.port | int | `50052` |  |
 | breeze.service.type | string | `"ClusterIP"` |  |
-| breeze.env.BREEZE_GRPC_ADDRESS | string | `"breeze:50052"` | Breeze 服务地址（`<host>:<port>`） |
+| breeze.replicaCount | int | `1` |  |
+| breeze.resources | object | `{}` |  |
+| breeze.nodeSelector | object | `{}` |  |
+| breeze.tolerations | list | `[]` |  |
+| breeze.affinity | object | `{}` |  |
 | breeze.env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
 | breeze.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| breeze.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据对外时的端口号 |
-| breeze.env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库主机名 |
-| breeze.env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
-| breeze.env.JET_API_ENDPOINT | string | `"http://jet-project-man/api/plugin"` | Jet 为插件提供的服务地址 (`<schema>://<host>:<port>/api/plugin`) |
-| breeze.env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"50051"` | GRPC 服务监听的端口号 |
-| breeze.env.RELEASE_COOKIE | string | `"cookie"` |  |
-| breeze.env.RELEASE_NODE | string | `"sname"` |  |
-| breeze.env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"80"` | Trace Aware GRPC 服务监听的端口号 |
+| breeze.env.DYNAMIC_REPO_HOSTNAME | string | `"{{ .Values.dynamicdb.fullnameOverride }}"` | 项目数据库主机名 |
+| breeze.env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"{{ .Values.projectMan.service.port }}"` | GRPC 服务监听的端口号 |
+| breeze.env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"{{ .Values.traceAware.service.port }}"` | Trace Aware GRPC 服务监听的端口号 |
 | traceAware.image.pullPolicy | string | `"IfNotPresent"` |  |
 | traceAware.image.repository | string | `"jet/trace_aware"` |  |
 | traceAware.image.tag | string | `"latest"` |  |
+| traceAware.env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
+| traceAware.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
+| traceAware.env.DYNAMIC_REPO_HOSTNAME | string | `"{{ .Values.dynamicdb.fullnameOverride }}"` | 项目数据库主机名 |
+| traceAware.env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"{{ .Values.projectMan.service.port }}"` | GRPC 服务监听的端口号 |
+| traceAware.env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"{{ .Values.traceAware.service.port }}"` | Trace Aware GRPC 服务监听的端口号 |
+| traceAware.replicaCount | int | `1` |  |
+| traceAware.resources | object | `{}` |  |
+| traceAware.nodeSelector | object | `{}` |  |
+| traceAware.tolerations | list | `[]` |  |
+| traceAware.affinity | object | `{}` |  |
 | traceAware.service.name | string | `"trace-aware"` |  |
 | traceAware.service.port | int | `80` |  |
 | traceAware.service.type | string | `"ClusterIP"` |  |
-| registry | string | `"registry.cn-hangzhou.aliyuncs.com"` |  |
-| imagePullSecret.existImageSecrets | string | `""` |  |
-| imagePullSecret.imageCredentials | object | `{}` |  |
-| env.BREEZE_GRPC_ADDRESS | string | `"breeze:50052"` | Breeze 服务地址（`<host>:<port>`） |
-| env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
-| env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据对外时的端口号 |
-| env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库主机名 |
-| env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
-| env.JET_API_ENDPOINT | string | `"http://jet-project-man/api/plugin"` | Jet 为插件提供的服务地址 (`<schema>://<host>:<port>/api/plugin`) |
-| env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"50051"` | GRPC 服务监听的端口号 |
 | env.RELEASE_COOKIE | string | `"cookie"` |  |
 | env.RELEASE_NODE | string | `"sname"` |  |
-| env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"80"` | Trace Aware GRPC 服务监听的端口号 |
 | secret.credential_secret | string | `""` | 用于加密应用数据库密码的密钥（`openssl rand -base64 48`） |
 | secret.dynamic_repo_password | string | `"changeit"` | 项目数据库密码 |
 | secret.jet_jwt_private_key | string | `""` | Jet 用于签名 JWT 的 RSA 私钥 |
@@ -86,18 +90,14 @@ A jet helm chart
 | subpath | string | `""` | jet 子路径 |
 | middlewares.corsSettings | object | `{}` | 跨域配置 |
 | backup | object | `{}` | 数据库备份设置 |
-| projectmandb.auth.postgresPassword | string | `"changeit"` | postgres 用户密码设置 |
 | projectmandb.enabled | bool | `false` | 是否部署 projectmandb 数据库 |
 | projectmandb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
-| projectmandb.primary.initdb.password | string | `"changeit"` | 指定 PostgreSQL 密码以执行 initdb 脚本 |
 | projectmandb.primary.initdb.scripts | string | `{}` | initdb 脚本字典 |
 | projectmandb.primary.persistence.enabled | bool | `false` | 使用PVC启用PostgreSQL主数据持久化 |
 | projectmandb.primary.pgHbaConfiguration | string | `""` | PostgreSQL 主客户端身份验证配置 |
 | projectmandb.shmVolume.sizeLimit | string | `"5Gi"` | 设置此项以启用 shm tmpfs 的大小限制 |
-| dynamicdb.auth.postgresPassword | string | `"changeit"` | postgres 用户密码设置 |
 | dynamicdb.enabled | bool | `false` | 是否部署 dynamicdb 数据库 |
 | dynamicdb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
-| dynamicdb.primary.initdb.password | string | `"changeit"` | 指定 PostgreSQL 密码以执行 initdb 脚本 |
 | dynamicdb.primary.initdb.scripts | string | `{}` | 指定 PostgreSQL 密码以执行 initdb 脚本 |
 | dynamicdb.primary.persistence.enabled | bool | `false` | 使用PVC启用PostgreSQL主数据持久化 |
 | dynamicdb.primary.pgHbaConfiguration | string | `""` | PostgreSQL 主客户端身份验证配置 |
@@ -171,30 +171,27 @@ project_man_database_url: ""
 ### 4. 设置环境变量
 
 ```yaml
+projectMan:
+  env:
+    # 项目数据库名称
+    DYNAMIC_REPO_DATABASE: dynamic_prod
+    # 项目数据库对外时的主机名
+    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+breeze:
+  env:
+    # 项目数据库名称
+    DYNAMIC_REPO_DATABASE: dynamic_prod
+    # 项目数据库对外时的主机名
+    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+traceAware:
+  env:
+    # 项目数据库名称
+    DYNAMIC_REPO_DATABASE: dynamic_prod
+    # 项目数据库对外时的主机名
+    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
 env:
   RELEASE_NODE: sname
   RELEASE_COOKIE: cookie
-  # GRPC 服务监听的端口号
-  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
-  # 项目数据库主机名
-  DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
-  # 项目数据库用户名
-  DYNAMIC_REPO_USERNAME: postgres
-  # 项目数据库名称
-  DYNAMIC_REPO_DATABASE: dynamic_prod
-  # 项目数据库对外时的主机名
-  DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-  # 项目数据对外时的端口号
-  DYNAMIC_REPO_EXPOSED_PORT: "5432"
-  # Breeze 服务地址（<host>:<port>）
-  BREEZE_GRPC_ADDRESS: breeze:50052
-  JET_API_ENDPOINT: http://jet/api/plugin
-  # Trace Aware GRPC 服务监听的端口号
-  TRACE_AWARE_GRPC_SERVER_PORT: "80"
-# breeze 环境变量
-breeze:
-  env:
-    ...
 ```
 
 ### 5. 设置访问的 `hosts`
@@ -220,17 +217,40 @@ jetTLS:
 
 ## Misc
 
-### 1. 数据库依赖启用
+### 1. 数据库依赖配置
 
-```yaml
-projectmandb:
-  enabled: true
-dynamicdb:
-  enabled: true
-```
+- 启用数据库前手动添加数据库依赖的 secrets
 
-> ❗️使用数据库时请配置数据库持久化
-> [数据库详细配置](https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters)
+  ```yaml
+  apiVersion: v1
+  data:
+    project-man-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
+    dynamicdb-password: N2YxMDI0N2VmMjg4MzY1YWNmOWI=
+  kind: Secret
+  metadata:
+    name: dependencies-db-secret
+    namespace: # 与 jet 应用同一个 namespace
+  type: Opaque
+  ```
+
+  > 使用 base64 编码密码后设置给对应的 `project-man-password` `dynamicdb-password` 变量
+
+- 设置数据库启用与数据持久化
+
+  ```yaml
+  projectmandb:
+    enabled: true
+    persistence:
+       enabled: true
+       existingClaim: # 创建好的 PVC 名称
+  dynamicdb:
+    enabled: true
+    persistence:
+       enabled: true
+       existingClaim: # 创建好的 PVC 名称
+  ```
+
+> :warning:[数据库详细配置](https://github.com/bitnami/charts/tree/main/bitnami/postgresql#parameters)
 
 ### 2. 应用跨域设置
 
@@ -286,20 +306,4 @@ velero describe backups $backup_name --details
 ### 5. Subpath 支持
 ```yaml
 subpath: /jet
-```
-
-### 6. 应用跨域设置
-
-```yaml
-middleware:
-  corsSettings:
-    accessControlAllowHeaders:
-      - '*'
-    accessControlAllowMethods:
-      - GET
-      - OPTIONS
-      - PUT
-    accessControlAllowOriginList:
-      - '*'
-    accessControlMaxAge: "100"
 ```
