@@ -1,4 +1,5 @@
-registry: registry.cn-hangzhou.aliyuncs.com
+image:
+  registry: registry.cn-hangzhou.aliyuncs.com
 
 projectMan:
   image:

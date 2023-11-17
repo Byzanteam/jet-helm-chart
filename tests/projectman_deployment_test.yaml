@@ -39,7 +39,8 @@ tests:
 
   - it: should use exist image pull secret when set
     set:
-      existImageSecrets: docker-registry-secret  
+      image:
+        existingImageSecret: docker-registry-secret  
     asserts:
       - equal:
           path: spec.template.spec.imagePullSecrets[0].name

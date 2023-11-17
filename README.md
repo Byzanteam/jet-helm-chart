@@ -33,8 +33,8 @@ A jet helm chart
 | global.existingSecret.keys[2] | string | `"secret_key_base"` |  |
 | global.existingSecret.keys[3] | string | `"trace_aware_database_url"` |  |
 | global.existingSecret.keys[4] | string | `"project_man_database_url"` |  |
-| registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址  |
-| existImageSecrets | string | `""` | 已存在的镜像拉取凭证 secret |
+| image.registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址  |
+| image.existImageSecrets | string | `""` | 已存在的镜像拉取凭证 secret |
 | projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略  |
 | projectMan.image.repository | string | `"jet/project_man"` |  |
 | projectMan.image.tag | string | `"latest"` |  |

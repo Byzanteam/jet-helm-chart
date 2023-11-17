@@ -2,7 +2,7 @@
 Return the jet image name
 */}}
 {{- define "jet-helm-chart.projectManImage" }}
-{{- $registryName := .Values.registry -}}
+{{- $registryName := .Values.image.registry -}}
 {{- $repositoryName := .Values.projectMan.image.repository -}}
 {{- $tag := .Values.projectMan.image.tag | toString -}}
 {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}

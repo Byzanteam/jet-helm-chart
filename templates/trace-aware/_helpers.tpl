@@ -2,7 +2,7 @@
 Return the trace aware image name
 */}}
 {{- define "jet-helm-chart.traceAwareImage" }}
-{{- $registryName := .Values.registry -}}
+{{- $registryName := .Values.image.registry -}}
 {{- $repositoryName := .Values.traceAware.image.repository -}}
 {{- $tag := .Values.traceAware.image.tag | toString -}}
 {{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}

@@ -14,9 +14,9 @@ spec:
       labels:
         {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 8 }}
     spec:
-      {{- if .Values.existImageSecrets }}
+      {{- if .Values.image.existingImageSecret }}
       imagePullSecrets:
-        - name: {{ .Values.existImageSecrets }}
+        - name: {{ .Values.image.existingImageSecret }}
       {{- end }}
       initContainers:
         {{- if .Values.projectmandb.enabled }}

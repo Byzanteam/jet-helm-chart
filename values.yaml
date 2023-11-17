@@ -15,8 +15,9 @@ global:
       - trace_aware_database_url
       - project_man_database_url
 
-registry: registry.cn-hangzhou.aliyuncs.com
-existImageSecret: ""
+image:
+  registry: registry.cn-hangzhou.aliyuncs.com
+  existingImageSecret: ""
 
 projectMan:
   image:
