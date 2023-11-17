@@ -61,8 +61,6 @@ spec:
                   key: project_man_database_url
           envFrom:
             - configMapRef:
-                name: {{ include "jet-helm-chart.fullname" . }}-env
-            - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
           ports:
             - name: {{ .Values.breeze.service.name }}

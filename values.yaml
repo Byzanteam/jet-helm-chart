@@ -14,11 +14,9 @@ projectMan:
     pullPolicy: IfNotPresent
     tag: "latest"
   env:
-    PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
-    DYNAMIC_REPO_HOSTNAME: "{{ .Values.dynamicdb.fullnameOverride }}"
-    DYNAMIC_REPO_DATABASE: dynamic_prod
+    RELEASE_NODE: sname
+    RELEASE_COOKIE: cookie
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
@@ -43,22 +41,14 @@ breeze:
     type: ClusterIP
     port: 50052
   env:
-    PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
-    DYNAMIC_REPO_HOSTNAME: "{{ .Values.dynamicdb.fullnameOverride }}"
-    DYNAMIC_REPO_DATABASE: dynamic_prod
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
 traceAware:
   image:
     repository: jet/trace_aware
     pullPolicy: IfNotPresent
     tag: "latest"
   env:
-    PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
-    DYNAMIC_REPO_HOSTNAME: "{{ .Values.dynamicdb.fullnameOverride }}"
-    DYNAMIC_REPO_DATABASE: dynamic_prod
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
@@ -68,11 +58,6 @@ traceAware:
     name: trace-aware
     type: ClusterIP
     port: 80
-
-# Jet environment variable
-env:
-  RELEASE_NODE: sname
-  RELEASE_COOKIE: cookie
 
 secret:
   credential_secret: ""

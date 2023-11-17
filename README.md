@@ -32,6 +32,8 @@ A jet helm chart
 | projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略  |
 | projectMan.image.repository | string | `"jet/project_man"` |  |
 | projectMan.image.tag | string | `"latest"` |  |
+| projectMan.env.RELEASE_COOKIE | string | `"cookie"` |  |
+| projectMan.env.RELEASE_NODE | string | `"sname"` |  |
 | projectMan.env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
 | projectMan.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
 | projectMan.env.DYNAMIC_REPO_HOSTNAME | string | `"{{ .Values.dynamicdb.fullnameOverride }}"` | 项目数据库主机名 |
@@ -77,8 +79,6 @@ A jet helm chart
 | traceAware.service.name | string | `"trace-aware"` |  |
 | traceAware.service.port | int | `80` |  |
 | traceAware.service.type | string | `"ClusterIP"` |  |
-| env.RELEASE_COOKIE | string | `"cookie"` |  |
-| env.RELEASE_NODE | string | `"sname"` |  |
 | secret.credential_secret | string | `""` | 用于加密应用数据库密码的密钥（`openssl rand -base64 48`） |
 | secret.dynamic_repo_password | string | `"changeit"` | 项目数据库密码 |
 | secret.jet_jwt_private_key | string | `""` | Jet 用于签名 JWT 的 RSA 私钥 |
@@ -173,6 +173,8 @@ project_man_database_url: ""
 ```yaml
 projectMan:
   env:
+    RELEASE_NODE: sname
+    RELEASE_COOKIE: cookie
     # 项目数据库名称
     DYNAMIC_REPO_DATABASE: dynamic_prod
     # 项目数据库对外时的主机名
@@ -189,9 +191,6 @@ traceAware:
     DYNAMIC_REPO_DATABASE: dynamic_prod
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-env:
-  RELEASE_NODE: sname
-  RELEASE_COOKIE: cookie
 ```
 
 ### 5. 设置访问的 `hosts`
