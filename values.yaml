@@ -5,6 +5,16 @@
 nameOverride: ""
 fullnameOverride: ""
 
+global:
+  existingSecret:
+    name: jet-env-secret
+    keys:
+      - credential_secret
+      - jet_jwt_private_key
+      - secret_key_base
+      - trace_aware_database_url
+      - project_man_database_url
+
 registry: registry.cn-hangzhou.aliyuncs.com
 existImageSecret: ""
 
@@ -59,14 +69,6 @@ traceAware:
     type: ClusterIP
     port: 80
 
-secret:
-  credential_secret: ""
-  dynamic_repo_password: changeit
-  jet_jwt_private_key: ""
-  secret_key_base: ""
-  trace_aware_database_url: ecto://postgres:changeit@jet-postgresql/trace_aware_prod
-  project_man_database_url: ecto://postgres:changeit@jet-postgresql/project_man_prod
-
 # Jet ingress route
 hosts: []
   # - localhost
@@ -112,7 +114,7 @@ projectmandb:
   architecture: standalone
   auth:
     database: postgres
-    existingSecret: dependencies-db-secret
+    existingSecret: "{{ .Values.global.existingSecret.name }}"
     secretKeys:
       adminPasswordKey: project-man-password
   image:
@@ -167,7 +169,7 @@ dynamicdb:
   architecture: standalone
   auth:
     database: postgres
-    existingSecret: dependencies-db-secret
+    existingSecret: "{{ .Values.global.existingSecret.name }}"
     secretKeys:
       adminPasswordKey: dynamicdb-password
   image:

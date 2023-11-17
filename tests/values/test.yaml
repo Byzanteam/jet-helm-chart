@@ -25,20 +25,6 @@ traceAware:
     type: ClusterIP
     port: 80
 
-env:
-  RELEASE_NODE: sname
-  RELEASE_COOKIE: cookie
-
-secret:
-  credential_secret: gBgN6F4183LXKFbiE
-  project_man_database_url: ecto://postgres:postgres@project_man_postgres/postgres
-  trace_aware_database_url: ecto://postgres:changeit@jet-postgresql/trace_aware_prod
-  dynamic_repo_password: postgres
-  jet_jwt_private_key: |
-    -----BEGIN PRIVATE KEY-----
-    IICdgIBADANBgkqhkiG9w0BAQEFA
-  secret_key_base: Sl7ym/kDmxL7mc
-
 hosts:
   - "jet.work"
   - "localhost"

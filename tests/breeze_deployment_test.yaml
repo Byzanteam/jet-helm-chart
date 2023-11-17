@@ -45,3 +45,59 @@ tests:
           path: spec.template.spec.imagePullSecrets[0].name
           value: docker-registry-secret
 
+  - it: render containers env
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].env[0].name
+          value: CREDENTIAL_SECRET
+      - isSubset: 
+          path: spec.template.spec.containers[0].env[0].valueFrom
+          content:
+            secretKeyRef:
+              name: jet-env-secret
+              key: credential_secret
+      - equal:
+          path: spec.template.spec.containers[0].env[1].name
+          value: JET_JWT_PRIVATE_KEY
+      - isSubset: 
+          path: spec.template.spec.containers[0].env[1].valueFrom
+          content:
+            secretKeyRef:
+              name: jet-env-secret
+              key: jet_jwt_private_key
+      - equal:
+          path: spec.template.spec.containers[0].env[2].name
+          value: SECRET_KEY_BASE
+      - isSubset: 
+          path: spec.template.spec.containers[0].env[2].valueFrom
+          content:
+            secretKeyRef:
+              name: jet-env-secret
+              key: secret_key_base
+      - equal:
+          path: spec.template.spec.containers[0].env[3].name
+          value: TRACE_AWARE_DATABASE_URL
+      - isSubset: 
+          path: spec.template.spec.containers[0].env[3].valueFrom
+          content:
+            secretKeyRef:
+              name: jet-env-secret
+              key: trace_aware_database_url
+      - equal:
+          path: spec.template.spec.containers[0].env[4].name
+          value: PROJECT_MAN_DATABASE_URL
+      - isSubset: 
+          path: spec.template.spec.containers[0].env[4].valueFrom
+          content:
+            secretKeyRef:
+              name: jet-env-secret
+              key: project_man_database_url
+      - equal:
+          path: spec.template.spec.containers[0].env[5].name
+          value: DYNAMIC_REPO_PASSWORD
+      - isSubset: 
+          path: spec.template.spec.containers[0].env[5].valueFrom
+          content:
+            secretKeyRef:
+              name: jet-env-secret
+              key: dynamicdb-password

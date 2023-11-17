@@ -27,6 +27,12 @@ A jet helm chart
 |-----|------|---------|-------------|
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
+| global.existingSecret.name | string | `jet-env-secret` |  |
+| global.existingSecret.keys[0] | string | `"credential_secret"` |  |
+| global.existingSecret.keys[1] | string | `"jet_jwt_private_key"` |  |
+| global.existingSecret.keys[2] | string | `"secret_key_base"` |  |
+| global.existingSecret.keys[3] | string | `"trace_aware_database_url"` |  |
+| global.existingSecret.keys[4] | string | `"project_man_database_url"` |  |
 | registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址  |
 | existImageSecrets | string | `""` | 已存在的镜像拉取凭证 secret |
 | projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略  |
@@ -34,11 +40,7 @@ A jet helm chart
 | projectMan.image.tag | string | `"latest"` |  |
 | projectMan.env.RELEASE_COOKIE | string | `"cookie"` |  |
 | projectMan.env.RELEASE_NODE | string | `"sname"` |  |
-| projectMan.env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
 | projectMan.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| projectMan.env.DYNAMIC_REPO_HOSTNAME | string | `"{{ .Values.dynamicdb.fullnameOverride }}"` | 项目数据库主机名 |
-| projectMan.env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"{{ .Values.projectMan.service.port }}"` | GRPC 服务监听的端口号 |
-| projectMan.env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"{{ .Values.traceAware.service.port }}"` | Trace Aware GRPC 服务监听的端口号 |
 | projectMan.replicaCount | int | `1` |  |
 | projectMan.resources | object | `{}` |  |
 | projectMan.nodeSelector | object | `{}` |  |
@@ -58,19 +60,11 @@ A jet helm chart
 | breeze.nodeSelector | object | `{}` |  |
 | breeze.tolerations | list | `[]` |  |
 | breeze.affinity | object | `{}` |  |
-| breeze.env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
 | breeze.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| breeze.env.DYNAMIC_REPO_HOSTNAME | string | `"{{ .Values.dynamicdb.fullnameOverride }}"` | 项目数据库主机名 |
-| breeze.env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"{{ .Values.projectMan.service.port }}"` | GRPC 服务监听的端口号 |
-| breeze.env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"{{ .Values.traceAware.service.port }}"` | Trace Aware GRPC 服务监听的端口号 |
 | traceAware.image.pullPolicy | string | `"IfNotPresent"` |  |
 | traceAware.image.repository | string | `"jet/trace_aware"` |  |
 | traceAware.image.tag | string | `"latest"` |  |
-| traceAware.env.DYNAMIC_REPO_DATABASE | string | `"dynamic_prod"` | 项目数据库名称 |
 | traceAware.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| traceAware.env.DYNAMIC_REPO_HOSTNAME | string | `"{{ .Values.dynamicdb.fullnameOverride }}"` | 项目数据库主机名 |
-| traceAware.env.PROJECT_MAN_GRPC_SERVER_PORT | string | `"{{ .Values.projectMan.service.port }}"` | GRPC 服务监听的端口号 |
-| traceAware.env.TRACE_AWARE_GRPC_SERVER_PORT | string | `"{{ .Values.traceAware.service.port }}"` | Trace Aware GRPC 服务监听的端口号 |
 | traceAware.replicaCount | int | `1` |  |
 | traceAware.resources | object | `{}` |  |
 | traceAware.nodeSelector | object | `{}` |  |
@@ -102,7 +96,6 @@ A jet helm chart
 | dynamicdb.primary.persistence.enabled | bool | `false` | 使用PVC启用PostgreSQL主数据持久化 |
 | dynamicdb.primary.pgHbaConfiguration | string | `""` | PostgreSQL 主客户端身份验证配置 |
 | dynamicdb.shmVolume.sizeLimit | string | `"5Gi"` | 设置此项以启用 shm tmpfs 的大小限制 |
-
 
 ----------------------------------------------
 
@@ -153,20 +146,39 @@ imageCredentials:
 
 ### 3. 设置 secret 参数
 
+手动创建 secret 资源存储环境变量信息
 ```yaml
-# 用于加密应用数据库密码的密钥（`openssl rand -base64 48`）
-credential_secret: ""
-# 项目数据库密码
-dynamic_repo_password: ""
-# Jet 用于签名 JWT 的 RSA 私钥
-jet_jwt_private_key: ""
-# Phoenix 用于生成会话密码的密钥
-secret_key_base: ""
-# Trace Aware 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
-trace_aware_database_url: ""
-# Jet 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
-project_man_database_url: ""
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jet-env-secret
+  namespace: # 与 jet 应用同一个 namespace
+type: Opaque
+data:
+  credential_secret: Z0JnTjZGNDE4M0xYS0ZiaUU1OUsvenErVnVYMW0zeDJjZjFscnkrVEVkZmxFM2k0SWpVWUdPYk9sbXlLbTJPcA==
+  jet_jwt_private_key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCklJQ2RnSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NBbUF3Z2dKY0FnRUFBb0dCQU1EeHJ2dCt3aG9iVGZ6eAoxd1NHZmZwTk1mT0ExRUNlT3J3MHRDUzRCRUJLVTZqVXBac1dQUDFDcHlPNGpLQzQvVWJrZkd2eXo1R2MzK0cKbWFndGNjQW9yanZHNGhtZ05iU0ZOYkQ4OUJxVUQ2a0E3UzF3S0hLQ0szQ0xyZnp1SGR1NHlSbVhjT3E4Z2llCllDaGR6cXlrMjRjRnc2YndjbGEwYSszb0VGM0FnTUJBQUVDZ1lBeHBmOUE5LzA2ZW93MjZvWnZTcmtqOGY2Qwo2QXUyRlFGSUxNZXVLeXZzM3pObjNsQSsrQm41a1kwd3creHI3eTQ5Yjg0VWVRYXdrWTJLbS8rdUp3Tmh0aUMKRk9LemFOSnZBTDVmSnlQTUQvQ2JFZCtTWFVMMjd2b1FFaGtISTduamQrTVFxTHJpQWl2NDM5Sno4VkNaUTZHCjdIUmpPdVBkUjd4WFU2ckFRSkJBT0ZZUGdwaUxBZDY1cSs4aEx4OG5tUm03UmFKdFBOdWVHSW9ZaU85TURwYQp4TERRU01FbnlTeHQyUEgwRXBiUThyUWdmTE9EaEQ2b05PZ1NtMCtYZ1VDUVFEYk1SSXlsMDg4empTalhkTEQKKzlIUTJOWDVEalNpeWlxVHYxMzBLeVJQbW1NRzVyWnRMempzcGh6MU0yK1dXR2VKMDA0ZGduS2RSNVJEZFlMCjc1TEFrQnQ1SEtjN2JNN0VweGRKem8wRVRITkZNU2FNUjJsZVVJTDNGVy95QXMwNmcrMS9ySk5PWHZDa1VnMQpNT3kvejdZTVVhdCtmNnlHUWRGTE80ZXlFTmhBa0VBdDc4RUxVcndqdDJoL00xYk1NV1lxZG5RL3MzLzRHZnQKQTlOcGxKVlI1RFZkREZ6OTBydkNjWWV6UU00MG5nbFFDcGNMcGV0RDM1c3dxL2hub01TendKQVlpQ25UeUVWCjVxTnZaNkZKWkNlK2l4TWo4L0ZXVlBFNlFLcHpBMFl3VndUeVB1MnRzSDFMRXowVW1zTUozV0dvZENtUDB2YgpHSWZyL2l5WHMxbDRnPT0KLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==
+  secret_key_base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGFxVG5FL0JvSFFmc0dBd25LcVFhS2Z5eldQczRwQWViVQ==
+  trace_aware_database_url: ZWN0bzovL3Bvc3RncmVzOmZhOTllMjRlNDkyYWY4ODU2ZjAxQGpldC1wb3N0Z3Jlc3FsL3RyYWNlX2F3YXJlX3Byb2Q=
+  project_man_database_url: ZWN0bzovL3Bvc3RncmVzOmZhOTllMjRlNDkyYWY4ODU2ZjAxQGpldC1wb3N0Z3Jlc3FsL3Byb2plY3RfbWFuX3Byb2Q=
+  project-man-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
+  dynamicdb-password: N2YxMDI0N2VmMjg4MzY1YWNmOWI=
 ```
+> 参数解释如下：
+> ```yaml
+> # 用于加密应用数据库密码的密钥（`openssl rand -base64 48`）
+> credential_secret: ""
+> # 项目数据库密码
+> dynamicdb-password: ""
+> # Jet 用于签名 JWT 的 RSA 私钥
+> jet_jwt_private_key: ""
+> # Phoenix 用于生成会话密码的密钥
+> secret_key_base: ""
+> # Trace Aware 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
+> trace_aware_database_url: ""
+> # Jet 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
+> project_man_database_url: ""
+> ```
+> :warning: 使用 base64 编码后填入 secret 资源文件对应 key 中
 
 ### 4. 设置环境变量
 
@@ -175,20 +187,14 @@ projectMan:
   env:
     RELEASE_NODE: sname
     RELEASE_COOKIE: cookie
-    # 项目数据库名称
-    DYNAMIC_REPO_DATABASE: dynamic_prod
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
 breeze:
   env:
-    # 项目数据库名称
-    DYNAMIC_REPO_DATABASE: dynamic_prod
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
 traceAware:
   env:
-    # 项目数据库名称
-    DYNAMIC_REPO_DATABASE: dynamic_prod
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
 ```
@@ -222,18 +228,17 @@ jetTLS:
 
   ```yaml
   apiVersion: v1
-  data:
-    project-man-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
-    dynamicdb-password: N2YxMDI0N2VmMjg4MzY1YWNmOWI=
   kind: Secret
   metadata:
-    name: dependencies-db-secret
+    name: jet-env-secret
     namespace: # 与 jet 应用同一个 namespace
   type: Opaque
+  data:
+    project-man-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
   ```
-
-  > 使用 base64 编码密码后设置给对应的 `project-man-password` `dynamicdb-password` 变量
-
+  
+  > :warning: 使用 base64 编码密码后设置给对应的 `project-man-password`  变量
+  
 - 设置数据库启用与数据持久化
 
   ```yaml
