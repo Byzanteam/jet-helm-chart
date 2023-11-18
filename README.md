@@ -81,8 +81,8 @@ A jet helm chart
 | secret.trace_aware_database_url | string | `"ecto://postgres:changeit@jet-postgresql/trace_aware_prod"` | Trace Aware 数据库连接地址（格式：`ecto://USER:PASS@HOST/DATABASE`，[参考](https://hexdocs.pm/ecto/3.9.4/Ecto.Repo.html#module-urls)） |
 | hosts | list | `[]` | jet 的访问地址 |
 | jetTLS | object | `{}` | tls 证书 |
-| subpath | string | `""` | jet 子路径 |
-| middlewares.corsSettings | object | `{}` | 跨域配置 |
+| ingressroute.subpath | string | `""` | jet 子路径 |
+| ingressroute.middlewares.corsSettings | object | `{}` | 跨域配置 |
 | backup | object | `{}` | 数据库备份设置 |
 | projectmandb.enabled | bool | `false` | 是否部署 projectmandb 数据库 |
 | projectmandb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
@@ -259,16 +259,18 @@ jetTLS:
 ### 2. 应用跨域设置
 
 ```yaml
-corsSettings:
-  accessControlAllowHeaders:
-    - '*'
-  accessControlAllowMethods:
-    - GET
-    - OPTIONS
-    - PUT
-  accessControlAllowOriginList:
-    - '*'
-  accessControlMaxAge: "100"
+ingressroute:
+  middlewares:
+    corsSettings:
+      accessControlAllowHeaders:
+        - '*'
+      accessControlAllowMethods:
+        - GET
+        - OPTIONS
+        - PUT
+      accessControlAllowOriginList:
+        - '*'
+      accessControlMaxAge: "100"
 ```
 
 ### 3. 备份设置
@@ -309,5 +311,6 @@ velero describe backups $backup_name --details
 
 ### 5. Subpath 支持
 ```yaml
-subpath: /jet
+ingressroute:
+  subpath: /jet
 ```
