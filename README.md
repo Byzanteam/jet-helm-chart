@@ -133,16 +133,10 @@ traceAware:
 ### 2. 设置拉取镜像凭证
 
 ```yaml
-imageCredentials:
-  # 设置仓库用户与密码
-  username: deploy-man@skylark
-  password: changeit
-  
+image:  
   # 使用已存在的仓库凭证
   existImageSecrets: ""
 ```
-
-> 镜像拉取凭证使用已有凭证与新建凭证设置一个即可
 
 ### 3. 设置 secret 参数
 
