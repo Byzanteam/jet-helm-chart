@@ -31,7 +31,7 @@ Middlewares for web ingress-routes
 {{- $webMiddlewares = append $webMiddlewares "cors" }}
 {{- end }}
 {{- $webMiddlewares = append $webMiddlewares "compress" }}
-{{- if .Values.jetTLS }}
+{{- if .Values.certificate }}
 {{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
 {{- end }}
 {{- range $middleware := $webMiddlewares }}

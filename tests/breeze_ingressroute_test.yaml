@@ -34,7 +34,7 @@ tests:
           value: RELEASE-NAME-jet-helm-chart-redirect-to-https
         documentIndex: 0
 
-  - it: should render middleware if set jetTLS
+  - it: should render middleware if set certificate
     values:
       - ./values/test.yaml
     asserts:
@@ -43,7 +43,7 @@ tests:
           value: RELEASE-NAME-jet-helm-chart-redirect-to-https
         documentIndex: 0
 
-  - it:  should render tls secretName if set jetTLS
+  - it:  should render tls secretName if set certificate
     values:
       - ./values/test.yaml
     asserts:
@@ -53,9 +53,9 @@ tests:
             secretName: jet-secret
         documentIndex: 1
 
-  - it:  should render tls certResolver if set jetTLS
+  - it:  should render tls certResolver if set certificate
     set:
-      jetTLS:
+      certificate:
         certResolver: byzanteam
     values:
       - ./values/test.yaml

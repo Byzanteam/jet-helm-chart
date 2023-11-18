@@ -16,7 +16,7 @@ spec:
       middlewares:
         {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
 ---
-{{- if .Values.jetTLS }}
+{{- if .Values.certificate }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -35,9 +35,9 @@ spec:
       middlewares:
         {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
   tls:
-    {{- if .Values.jetTLS.certResolver }}
-    certResolver: {{ .Values.jetTLS.certResolver }}
-    {{- else if .Values.jetTLS.tlsSecretName }}
-    secretName: {{ .Values.jetTLS.tlsSecretName }}
+    {{- if .Values.certificate.certResolver }}
+    certResolver: {{ .Values.certificate.certResolver }}
+    {{- else if .Values.certificate.tlsSecretName }}
+    secretName: {{ .Values.certificate.tlsSecretName }}
     {{- end }}
 {{- end }}

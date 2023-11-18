@@ -74,7 +74,7 @@ traceAware:
 hosts: []
   # - localhost
   # - jet.work
-jetTLS: {}
+certificate: {}
   # Certificate challenge field
   # certResolver: jet
   #

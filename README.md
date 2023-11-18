@@ -80,7 +80,7 @@ A jet helm chart
 | secret.project_man_database_url | string | `"ecto://postgres:changeit@jet-postgresql/project_man_prod"` | Jet 数据库连接地址（格式：`ecto://USER:PASS@HOST/DATABASE`，[参考](https://hexdocs.pm/ecto/3.9.4/Ecto.Repo.html#module-urls)） |
 | secret.trace_aware_database_url | string | `"ecto://postgres:changeit@jet-postgresql/trace_aware_prod"` | Trace Aware 数据库连接地址（格式：`ecto://USER:PASS@HOST/DATABASE`，[参考](https://hexdocs.pm/ecto/3.9.4/Ecto.Repo.html#module-urls)） |
 | hosts | list | `[]` | jet 的访问地址 |
-| jetTLS | object | `{}` | tls 证书 |
+| certificate | object | `{}` | tls 证书 |
 | ingressroute.subpath | string | `""` | jet 子路径 |
 | ingressroute.middlewares.corsSettings | object | `{}` | 跨域配置 |
 | backup | object | `{}` | 数据库备份设置 |
@@ -210,7 +210,7 @@ hosts:
 ### 6. 设置 TLS 证书
 
 ```yaml
-jetTLS:
+certificate:
   # 使用证书挑战
   certResolver: jet
   

@@ -47,6 +47,6 @@ ingressroute:
         - 'test.cn'
       accessControlMaxAge: "200"
 
-jetTLS:
+certificate:
   tlsSecretName: jet-secret
 
