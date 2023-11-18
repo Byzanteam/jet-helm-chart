@@ -81,21 +81,22 @@ jetTLS: {}
   # Custom tls certificate secret name
   # tlsSecretName: ""
 
-# Jet subpath
-subpath: ""
+ingressroute:
+  # Jet subpath
+  subpath: ""
 
-# Ingress middlewares
-middlewares:
-  corsSettings: {}
-    # accessControlAllowHeaders:
-    #   - '*'
-    # accessControlAllowMethods:
-    #   - GET
-    #   - OPTIONS
-    #   - PUT
-    # accessControlAllowOriginList:
-    #   - '*'
-    # accessControlMaxAge: "100"
+  # Ingress middlewares
+  middlewares:
+    corsSettings: {}
+      # accessControlAllowHeaders:
+      #   - '*'
+      # accessControlAllowMethods:
+      #   - GET
+      #   - OPTIONS
+      #   - PUT
+      # accessControlAllowOriginList:
+      #   - '*'
+      # accessControlMaxAge: "100"
 
 backup: {}
   # veleroSchedule: "0 1 * * *"

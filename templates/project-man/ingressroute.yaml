@@ -1,26 +1,4 @@
-{{- $webMiddlewares := list }}
-{{- if .Values.subpath }}
-{{- $webMiddlewares = append $webMiddlewares "strip-prefix" }}
-{{- end }}
-{{- if .Values.middlewares.corsSettings }}
-{{- $webMiddlewares = append $webMiddlewares "cors" }}
-{{- end }}
-{{- $webMiddlewares = append $webMiddlewares "compress" }}
-{{- if .Values.jetTLS }}
-{{- $webMiddlewares = append $webMiddlewares "redirect-to-https" }}
-{{- end }}
-
-{{/* Middlewares for websecure ingress-routes */}}
-{{- $websecureMiddlewares := list }}
-{{- if .Values.subpath }}
-{{- $websecureMiddlewares = append $websecureMiddlewares "strip-prefix" }}
-{{- end }}
-{{- if .Values.middlewares.corsSettings }}
-{{- $websecureMiddlewares = append $websecureMiddlewares "cors" }}
-{{- end }}
-{{- $websecureMiddlewares = append $websecureMiddlewares "compress" }}
-
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-project-man-web
@@ -30,18 +8,16 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.subpath "path" "/")) }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
           port: {{ .Values.projectMan.service.port }}
       middlewares:
-        {{- range $webMiddlewares }}
-        - name: {{ include "jet-helm-chart.fullname" $ }}-{{ . }}
-        {{- end}}
+        {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
 ---
 {{- if .Values.jetTLS }}
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-project-man-websecure
@@ -51,15 +27,13 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.subpath "path" "/")) }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
           port: {{ .Values.projectMan.service.port }}
       middlewares:
-        {{- range $websecureMiddlewares }}
-        - name: {{ include "jet-helm-chart.fullname" $ }}-{{ . }}
-        {{- end}}
+        {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
   tls:
     {{- if .Values.jetTLS.certResolver }}
     certResolver: {{ .Values.jetTLS.certResolver }}
