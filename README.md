@@ -138,6 +138,8 @@ image:
   existImageSecrets: ""
 ```
 
+> [创建镜像拉取凭证说明](https://kubernetes.io/docs/concepts/configuration/secret/#docker-config-secrets)
+
 ### 3. 设置 secret 参数
 
 手动创建 secret 资源存储环境变量信息
