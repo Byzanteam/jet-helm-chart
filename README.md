@@ -51,15 +51,9 @@ A jet helm chart
 | projectMan.nodeSelector | object | `{}` |  |
 | projectMan.tolerations | list | `[]` |  |
 | projectMan.affinity | object | `{}` |  |
-| projectMan.service.name | string | `"project-man"` |  |
-| projectMan.service.port | int | `50051` |  |
-| projectMan.service.type | string | `"ClusterIP"` |  |
 | breeze.image.pullPolicy | string | `"IfNotPresent"` |  |
 | breeze.image.repository | string | `"jet/breeze"` |  |
 | breeze.image.tag | string | `"latest"` |  |
-| breeze.service.name | string | `"breeze"` |  |
-| breeze.service.port | int | `50052` |  |
-| breeze.service.type | string | `"ClusterIP"` |  |
 | breeze.replicaCount | int | `1` |  |
 | breeze.resources | object | `{}` |  |
 | breeze.nodeSelector | object | `{}` |  |
@@ -83,9 +77,6 @@ A jet helm chart
 | traceAware.nodeSelector | object | `{}` |  |
 | traceAware.tolerations | list | `[]` |  |
 | traceAware.affinity | object | `{}` |  |
-| traceAware.service.name | string | `"trace-aware"` |  |
-| traceAware.service.port | int | `80` |  |
-| traceAware.service.type | string | `"ClusterIP"` |  |
 | hosts | list | `[]` | jet 的访问地址 |
 | certificate | object | `{}` | tls 证书 |
 | ingressroute.subpath | string | `""` | jet 子路径 |
@@ -158,11 +149,11 @@ metadata:
   namespace: # 与 jet 应用同一个 namespace
 type: Opaque
 data:
-  credential_secret: Z0JnTjZGNDE4M0xYS0ZiaUU1OUsvenErVnVYMW0zeDJjZjFscnkrVEVkZmxFM2k0SWpVWUdPYk9sbXlLbTJPcA==
-  jet_jwt_private_key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCklJQ2RnSUJBREFOQmdrcWhraUc5dzBCQVFFRkFBU0NBbUF3Z2dKY0FnRUFBb0dCQU1EeHJ2dCt3aG9iVGZ6eAoxd1NHZmZwTk1mT0ExRUNlT3J3MHRDUzRCRUJLVTZqVXBac1dQUDFDcHlPNGpLQzQvVWJrZkd2eXo1R2MzK0cKbWFndGNjQW9yanZHNGhtZ05iU0ZOYkQ4OUJxVUQ2a0E3UzF3S0hLQ0szQ0xyZnp1SGR1NHlSbVhjT3E4Z2llCllDaGR6cXlrMjRjRnc2YndjbGEwYSszb0VGM0FnTUJBQUVDZ1lBeHBmOUE5LzA2ZW93MjZvWnZTcmtqOGY2Qwo2QXUyRlFGSUxNZXVLeXZzM3pObjNsQSsrQm41a1kwd3creHI3eTQ5Yjg0VWVRYXdrWTJLbS8rdUp3Tmh0aUMKRk9LemFOSnZBTDVmSnlQTUQvQ2JFZCtTWFVMMjd2b1FFaGtISTduamQrTVFxTHJpQWl2NDM5Sno4VkNaUTZHCjdIUmpPdVBkUjd4WFU2ckFRSkJBT0ZZUGdwaUxBZDY1cSs4aEx4OG5tUm03UmFKdFBOdWVHSW9ZaU85TURwYQp4TERRU01FbnlTeHQyUEgwRXBiUThyUWdmTE9EaEQ2b05PZ1NtMCtYZ1VDUVFEYk1SSXlsMDg4empTalhkTEQKKzlIUTJOWDVEalNpeWlxVHYxMzBLeVJQbW1NRzVyWnRMempzcGh6MU0yK1dXR2VKMDA0ZGduS2RSNVJEZFlMCjc1TEFrQnQ1SEtjN2JNN0VweGRKem8wRVRITkZNU2FNUjJsZVVJTDNGVy95QXMwNmcrMS9ySk5PWHZDa1VnMQpNT3kvejdZTVVhdCtmNnlHUWRGTE80ZXlFTmhBa0VBdDc4RUxVcndqdDJoL00xYk1NV1lxZG5RL3MzLzRHZnQKQTlOcGxKVlI1RFZkREZ6OTBydkNjWWV6UU00MG5nbFFDcGNMcGV0RDM1c3dxL2hub01TendKQVlpQ25UeUVWCjVxTnZaNkZKWkNlK2l4TWo4L0ZXVlBFNlFLcHpBMFl3VndUeVB1MnRzSDFMRXowVW1zTUozV0dvZENtUDB2YgpHSWZyL2l5WHMxbDRnPT0KLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==
-  secret_key_base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGFxVG5FL0JvSFFmc0dBd25LcVFhS2Z5eldQczRwQWViVQ==
-  trace_aware_database_url: ZWN0bzovL3Bvc3RncmVzOmZhOTllMjRlNDkyYWY4ODU2ZjAxQGpldC1wb3N0Z3Jlc3FsL3RyYWNlX2F3YXJlX3Byb2Q=
-  project_man_database_url: ZWN0bzovL3Bvc3RncmVzOmZhOTllMjRlNDkyYWY4ODU2ZjAxQGpldC1wb3N0Z3Jlc3FsL3Byb2plY3RfbWFuX3Byb2Q=
+  credential_secret: Z0JnTjZGNDE4M0xYS0ZiaUU12k0SWpVWUdPYk9sbXlLbTJPcA==
+  jet_jwt_private_key: DcGNMcGV0RDM1c3dxL2hub01TendKQVlS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==
+  secret_key_base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGF5LcVFhS2Z5eldQczRwQWViVQ==
+  trace_aware_database_url: ZWN0bzovL3Bvc3Rnc3N0Z3Jlc3FsL3RyYWNlX2F3YXJlX3Byb2Q=
+  project_man_database_url: ZWN0bzovL3Bvc3RncmVzOmZhOTllMjRlNDkyYWYJlc3FsL3Byb2plY3RfbWFuX3Byb2Q=
   project-man-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
   dynamicdb-password: N2YxMDI0N2VmMjg4MzY1YWNmOWI=
 ```

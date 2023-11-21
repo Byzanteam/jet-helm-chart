@@ -12,7 +12,7 @@ spec:
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
-          port: {{ .Values.projectMan.service.port }}
+          port: 50051
       middlewares:
         {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
 ---
@@ -31,7 +31,7 @@ spec:
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
-          port: {{ .Values.projectMan.service.port }}
+          port: 50051
       middlewares:
         {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
   tls:

@@ -5,11 +5,11 @@ metadata:
   labels:
     {{- include "jet-helm-chart.breezeLabels" . | nindent 4 }}
 spec:
-  type: {{ .Values.breeze.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.breeze.service.port }}
-      targetPort: {{ .Values.breeze.service.name }}
+    - port: 50052
+      targetPort: breeze
       protocol: TCP
-      name: {{ .Values.breeze.service.name }}
+      name: breeze
   selector:
     {{- include "jet-helm-chart.breezeSelectorLabels" . | nindent 4 }}

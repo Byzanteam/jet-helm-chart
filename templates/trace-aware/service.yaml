@@ -5,11 +5,11 @@ metadata:
   labels:
     {{- include "jet-helm-chart.traceAwareLabels" . | nindent 4 }}
 spec:
-  type: {{ .Values.traceAware.service.type }}
+  type: ClusterIP
   ports:
-    - port: {{ .Values.traceAware.service.port }}
-      targetPort: {{ .Values.traceAware.service.name }}
+    - port: 80
+      targetPort: trace-aware
       protocol: TCP
-      name: {{ .Values.traceAware.service.name }}
+      name: trace-aware
   selector:
     {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 4 }}

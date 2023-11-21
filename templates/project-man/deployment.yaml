@@ -60,8 +60,8 @@ spec:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-project-man-env
           ports:
-            - name: {{ .Values.projectMan.service.name }}
-              containerPort: {{ .Values.projectMan.service.port }}
+            - name: project-man
+              containerPort: 50051
               protocol: TCP
           resources:
             {{- toYaml .Values.projectMan.resources | nindent 12 }}

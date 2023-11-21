@@ -8,6 +8,6 @@ data:
   {{- tpl (.Values.breeze.env | toYaml | nindent 2) . }}
   BREEZE_GRPC_ADDRESS: {{ include "jet-helm-chart.breezeAddress" . }}
   JET_API_ENDPOINT: {{ include "jet-helm-chart.jetApiEndpoint" . }}
-  PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
-  TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
+  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
+  TRACE_AWARE_GRPC_SERVER_PORT: "80"
 

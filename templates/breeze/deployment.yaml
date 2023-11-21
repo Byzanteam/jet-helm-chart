@@ -25,9 +25,9 @@ spec:
           args:
             - 'start'
             - '-j'
-            - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:{{ .Values.projectMan.service.port }}'
+            - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:50051'
             - '-g'
-            - '0.0.0.0:{{ .Values.breeze.service.port }}'
+            - '0.0.0.0:50052'
           env:
             {{- range .Values.global.existingSecret.keys }}
             - name: {{ . | quote | upper }}
@@ -45,8 +45,8 @@ spec:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
           ports:
-            - name: {{ .Values.breeze.service.name }}
-              containerPort: {{ .Values.breeze.service.port }}
+            - name: breeze
+              containerPort: 50052
               protocol: TCP
           resources:
             {{- toYaml .Values.breeze.resources | nindent 12 }}

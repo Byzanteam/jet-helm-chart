@@ -54,8 +54,8 @@ spec:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-trace-aware-env
           ports:
-            - name: {{ .Values.traceAware.service.name }}
-              containerPort: {{ .Values.traceAware.service.port }}
+            - name: trace-aware
+              containerPort: 80
               protocol: TCP
           resources:
             {{- toYaml .Values.traceAware.resources | nindent 12 }}

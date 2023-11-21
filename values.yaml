@@ -39,10 +39,6 @@ projectMan:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  service:
-    name: project-man
-    type: ClusterIP
-    port: 50051
 breeze:
   image:
     repository: jet/breeze
@@ -53,10 +49,6 @@ breeze:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  service:
-    name: breeze
-    type: ClusterIP
-    port: 50052
   env:
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
     DYNAMIC_REPO_USERNAME: postgres
@@ -79,10 +71,6 @@ traceAware:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  service:
-    name: trace-aware
-    type: ClusterIP
-    port: 80
 
 # Jet ingress route
 hosts: []
