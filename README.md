@@ -33,6 +33,7 @@ A jet helm chart
 | global.existingSecret.keys[2] | string | `"secret_key_base"` |  |
 | global.existingSecret.keys[3] | string | `"trace_aware_database_url"` |  |
 | global.existingSecret.keys[4] | string | `"project_man_database_url"` |  |
+| global.dynamicdb.database | string | `dynamic_prod` |  |
 | image.registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址  |
 | image.existImageSecrets | string | `""` | 已存在的镜像拉取凭证 secret |
 | projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略  |
@@ -41,6 +42,10 @@ A jet helm chart
 | projectMan.env.RELEASE_COOKIE | string | `"cookie"` |  |
 | projectMan.env.RELEASE_NODE | string | `"sname"` |  |
 | projectMan.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
+| projectMan.env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
+| projectMan.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
+| projectMan.env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库的主机名 |
+| projectMan.env.DYNAMIC_REPO_DATABASE | string | `"{{ .Values.global.dynamicdb.database }}"` | 项目数据库名 |
 | projectMan.replicaCount | int | `1` |  |
 | projectMan.resources | object | `{}` |  |
 | projectMan.nodeSelector | object | `{}` |  |
@@ -61,10 +66,18 @@ A jet helm chart
 | breeze.tolerations | list | `[]` |  |
 | breeze.affinity | object | `{}` |  |
 | breeze.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
+| breeze.env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
+| breeze.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
+| breeze.env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库的主机名 |
+| breeze.env.DYNAMIC_REPO_DATABASE | string | `"{{ .Values.global.dynamicdb.database }}"` | 项目数据库名 |
 | traceAware.image.pullPolicy | string | `"IfNotPresent"` |  |
 | traceAware.image.repository | string | `"jet/trace_aware"` |  |
 | traceAware.image.tag | string | `"latest"` |  |
 | traceAware.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
+| traceAware.env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
+| traceAware.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
+| traceAware.env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库的主机名 |
+| traceAware.env.DYNAMIC_REPO_DATABASE | string | `"{{ .Values.global.dynamicdb.database }}"` | 项目数据库名 |
 | traceAware.replicaCount | int | `1` |  |
 | traceAware.resources | object | `{}` |  |
 | traceAware.nodeSelector | object | `{}` |  |
@@ -173,20 +186,44 @@ data:
 ### 4. 设置环境变量
 
 ```yaml
+# 设置项目数据库的数据库名
+global:
+  dynamicdb:
+    database: dynamic_prod
+
 projectMan:
   env:
     RELEASE_NODE: sname
     RELEASE_COOKIE: cookie
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    # 项目数据库用户名
+    DYNAMIC_REPO_USERNAME: postgres
+    # 项目数据库端口
+    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    # 项目数据库的主机名
+    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
+
 breeze:
   env:
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    # 项目数据库用户名
+    DYNAMIC_REPO_USERNAME: postgres
+    # 项目数据库端口
+    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    # 项目数据库的主机名
+    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
 traceAware:
   env:
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    # 项目数据库用户名
+    DYNAMIC_REPO_USERNAME: postgres
+    # 项目数据库端口
+    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    # 项目数据库的主机名
+    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
 ```
 
 ### 5. 设置访问的 `hosts`

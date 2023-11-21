@@ -14,6 +14,8 @@ global:
       - secret_key_base
       - trace_aware_database_url
       - project_man_database_url
+  dynamicdb:
+    database: dynamic_prod
 
 image:
   registry: registry.cn-hangzhou.aliyuncs.com
@@ -28,6 +30,10 @@ projectMan:
     RELEASE_NODE: sname
     RELEASE_COOKIE: cookie
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    DYNAMIC_REPO_USERNAME: postgres
+    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
+    DYNAMIC_REPO_DATABASE: "{{ .Values.global.dynamicdb.database }}"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
@@ -53,6 +59,10 @@ breeze:
     port: 50052
   env:
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    DYNAMIC_REPO_USERNAME: postgres
+    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
+    DYNAMIC_REPO_DATABASE: "{{ .Values.global.dynamicdb.database }}"
 traceAware:
   image:
     repository: jet/trace_aware
@@ -60,6 +70,10 @@ traceAware:
     tag: "latest"
   env:
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    DYNAMIC_REPO_USERNAME: postgres
+    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
+    DYNAMIC_REPO_DATABASE: "{{ .Values.global.dynamicdb.database }}"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
@@ -204,7 +218,7 @@ dynamicdb:
           set -e
 
           psql -v ON_ERROR_STOP=1 --username "postgres" --dbname "postgres" <<-EOSQL
-          CREATE DATABASE dynamic_prod;
+          CREATE DATABASE "{{ .Values.global.dynamicdb.database }}";
           EOSQL
     name: production
     persistence:

@@ -8,10 +8,6 @@ data:
   {{- tpl (.Values.traceAware.env | toYaml | nindent 2) . }}
   BREEZE_GRPC_ADDRESS: {{ include "jet-helm-chart.breezeAddress" . }}
   JET_API_ENDPOINT: {{ include "jet-helm-chart.jetApiEndpoint" . }}
-  DYNAMIC_REPO_USERNAME: postgres
-  DYNAMIC_REPO_EXPOSED_PORT: "5432"
   PROJECT_MAN_GRPC_SERVER_PORT: "{{ .Values.projectMan.service.port }}"
   TRACE_AWARE_GRPC_SERVER_PORT: "{{ .Values.traceAware.service.port }}"
-  DYNAMIC_REPO_HOSTNAME: "{{ .Values.dynamicdb.fullnameOverride }}"
-  DYNAMIC_REPO_DATABASE: dynamic_prod
 
