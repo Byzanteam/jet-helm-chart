@@ -73,12 +73,6 @@ A jet helm chart
 | traceAware.service.name | string | `"trace-aware"` |  |
 | traceAware.service.port | int | `80` |  |
 | traceAware.service.type | string | `"ClusterIP"` |  |
-| secret.credential_secret | string | `""` | 用于加密应用数据库密码的密钥（`openssl rand -base64 48`） |
-| secret.dynamic_repo_password | string | `"changeit"` | 项目数据库密码 |
-| secret.jet_jwt_private_key | string | `""` | Jet 用于签名 JWT 的 RSA 私钥 |
-| secret.secret_key_base | string | `""` | Phoenix 用于生成会话密码的密钥 |
-| secret.project_man_database_url | string | `"ecto://postgres:changeit@jet-postgresql/project_man_prod"` | Jet 数据库连接地址（格式：`ecto://USER:PASS@HOST/DATABASE`，[参考](https://hexdocs.pm/ecto/3.9.4/Ecto.Repo.html#module-urls)） |
-| secret.trace_aware_database_url | string | `"ecto://postgres:changeit@jet-postgresql/trace_aware_prod"` | Trace Aware 数据库连接地址（格式：`ecto://USER:PASS@HOST/DATABASE`，[参考](https://hexdocs.pm/ecto/3.9.4/Ecto.Repo.html#module-urls)） |
 | hosts | list | `[]` | jet 的访问地址 |
 | certificate | object | `{}` | tls 证书 |
 | ingressroute.subpath | string | `""` | jet 子路径 |
