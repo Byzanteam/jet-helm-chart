@@ -7,6 +7,6 @@ charts:
   - .
 namespace: default
 release-label: app.kubernetes.io/namespace
-helm-extra-args: "--set hosts[0]=localhost --set dynamicdb.enabled=true --set projectmandb.enabled=true --set image.existingImageSecret=docker-registry-secret"
+helm-extra-args: "--set image.existingImageSecret=docker-registry-secret --set hosts[0]=localhost --set dynamicdb.enabled=true --set projectmandb.enabled=true"
 additional-commands:
   - helm unittest --strict .
