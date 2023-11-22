@@ -14,7 +14,7 @@ image:
 
 projectMan:
   image:
-    repository: jet/project_man
+    repository: jet/jet
     pullPolicy: IfNotPresent
     tag: "latest"
   env:

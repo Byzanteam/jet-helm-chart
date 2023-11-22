@@ -39,6 +39,9 @@ jobs:
         run: |
           helm repo add traefik https://traefik.github.io/charts
           helm install traefik traefik/traefik
+          echo -n "${{ secrets.DOCKER_REGISTRY_SECRET }}" | base64 -d | kubectl apply -n default -f -
+          echo -n "${{ secrets.JET_ENV_SECRET }}" | base64 -d | kubectl apply -n default -f -
+          echo -n "${{ secrets.DEPENDENCY_DB_SECRET }}" | base64 -d | kubectl -n default apply -f -
 
       - name: Run chart-testing (install)
-        run: helm install jet . --dry-run
+        run: ct install --config .github/linters/ct.yaml
