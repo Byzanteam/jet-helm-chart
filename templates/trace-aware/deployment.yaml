@@ -38,7 +38,11 @@ spec:
           image: {{ include "jet-helm-chart.traceAwareImage" . }}
           imagePullPolicy: {{ .Values.traceAware.image.pullPolicy }}
           env:
-            {{- include "jet-helm-chart.secretKeys" . | nindent 12 }}
+            - name: TRACE_AWARE_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingJetSecret.name }}
+                  key: trace-aware-database-url
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-trace-aware-env

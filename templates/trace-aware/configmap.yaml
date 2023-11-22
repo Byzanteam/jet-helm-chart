@@ -5,9 +5,5 @@ metadata:
     {{- include "jet-helm-chart.labels" . | nindent 4 }}
   name: {{ include "jet-helm-chart.fullname" . }}-trace-aware-env
 data:
-  {{- tpl (.Values.traceAware.env | toYaml | nindent 2) . }}
-  BREEZE_GRPC_ADDRESS: {{ include "jet-helm-chart.breezeAddress" . }}
-  JET_API_ENDPOINT: {{ include "jet-helm-chart.jetApiEndpoint" . }}
-  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
   TRACE_AWARE_GRPC_SERVER_PORT: "80"
 

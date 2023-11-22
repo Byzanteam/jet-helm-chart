@@ -5,7 +5,7 @@
 nameOverride: ""
 fullnameOverride: ""
 
-existingSecret:
+existingJetSecret:
   name: jet-env-secret
 
 image:
@@ -37,15 +37,11 @@ breeze:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  env: {}
 traceAware:
   image:
     repository: jet/trace_aware
     pullPolicy: IfNotPresent
     tag: "latest"
-  env:
-    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
   replicaCount: 1
   resources: {}
   nodeSelector: {}

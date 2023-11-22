@@ -28,12 +28,17 @@ spec:
             - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:50051'
             - '-g'
             - '0.0.0.0:50052'
+            - '-r'
+            - '0.0.0.0:2137'
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
           ports:
-            - name: breeze
+            - name: breeze-grpc
               containerPort: 50052
+              protocol: TCP
+            - name: breeze-http
+              containerPort: 2137
               protocol: TCP
           resources:
             {{- toYaml .Values.breeze.resources | nindent 12 }}

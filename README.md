@@ -50,12 +50,9 @@ A jet helm chart
 | breeze.nodeSelector | object | `{}` |  |
 | breeze.tolerations | list | `[]` |  |
 | breeze.affinity | object | `{}` |  |
-| breeze.env | object | `{}` | breeze 环境变量 |
 | traceAware.image.pullPolicy | string | `"IfNotPresent"` |  |
 | traceAware.image.repository | string | `"jet/trace_aware"` |  |
 | traceAware.image.tag | string | `"latest"` |  |
-| traceAware.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| traceAware.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
 | traceAware.replicaCount | int | `1` |  |
 | traceAware.resources | object | `{}` |  |
 | traceAware.nodeSelector | object | `{}` |  |
@@ -192,13 +189,6 @@ projectMan:
   env:
     RELEASE_NODE: sname
     RELEASE_COOKIE: cookie
-    # 项目数据库对外时的主机名
-    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    # 项目数据库对外时的端口
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
-
-traceAware:
-  env:
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
     # 项目数据库对外时的端口

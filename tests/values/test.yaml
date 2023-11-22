@@ -5,26 +5,14 @@ projectMan:
   image:
     repository: org/projectMan
     tag: "latest"
-  service:
-    name: projectMan
-    type: ClusterIP
-    port: 50051
 breeze:
   image:
     repository: org/breeze
     tag: "latest"
-  service:
-    name: breeze
-    type: ClusterIP
-    port: 50052
 traceAware:
   image:
     repository: org/traceAware
     tag: "latest"
-  service:
-    name: traceAware
-    type: ClusterIP
-    port: 80
 
 hosts:
   - "jet.work"

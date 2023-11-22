@@ -8,8 +8,12 @@ spec:
   type: ClusterIP
   ports:
     - port: 50052
-      targetPort: breeze
+      targetPort: breeze-grpc
       protocol: TCP
-      name: breeze
+      name: breeze-grpc
+    - port: 2137
+      targetPort: breeze-http
+      protocol: TCP
+      name: breeze-http
   selector:
     {{- include "jet-helm-chart.breezeSelectorLabels" . | nindent 4 }}

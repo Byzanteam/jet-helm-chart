@@ -1,4 +1,4 @@
-apiVersion: traefik.io/v1alpha1
+apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-breeze-web
@@ -12,12 +12,12 @@ spec:
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-breeze
-          port: 50052
+          port: 2137
       middlewares:
         {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
 ---
 {{- if .Values.certificate }}
-apiVersion: traefik.io/v1alpha1
+apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: {{ include "jet-helm-chart.fullname" . }}-breeze-websecure
@@ -31,9 +31,9 @@ spec:
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-breeze
-          port: 50052
+          port: 2137
       middlewares:
-        {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
+        {{- include "jet-helm-chart.websecureMiddlewares" . | nindent 8}}
   tls:
     {{- if .Values.certificate.certResolver }}
     certResolver: {{ .Values.certificate.certResolver }}
