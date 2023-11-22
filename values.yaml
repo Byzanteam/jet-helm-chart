@@ -5,6 +5,9 @@
 nameOverride: ""
 fullnameOverride: ""
 
+existingSecret:
+  name: jet-env-secret
+
 image:
   registry: registry.cn-hangzhou.aliyuncs.com
   existingImageSecret: ""
@@ -34,9 +37,7 @@ breeze:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  env:
-    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+  env: {}
 traceAware:
   image:
     repository: jet/trace_aware

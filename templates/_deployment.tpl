@@ -13,7 +13,7 @@ Build secret keys
 - name: {{ $key | quote | replace "-" "_" | upper }}
   valueFrom:
     secretKeyRef:
-      name: jet-env-secret
+      name: {{ $.Values.existingSecret.name }}
       key: {{ $key | quote }}
 {{- end }}
 {{- end }}

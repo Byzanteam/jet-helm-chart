@@ -32,7 +32,7 @@ spec:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.global.existingSecret.name }}
+                  name: dependency-db-secret
                   key: project-man-password
           command:
             - 'sh'

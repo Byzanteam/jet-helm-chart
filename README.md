@@ -27,9 +27,10 @@ A jet helm chart
 |-----|------|---------|-------------|
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
-| image.registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址  |
+| existingSecret.name | string | `"jet-env-secret"` | 已创建的 secret 名称 |
+| image.registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址 |
 | image.existImageSecrets | string | `""` | 已存在的镜像拉取凭证 secret |
-| projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略  |
+| projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略 |
 | projectMan.image.repository | string | `"jet/project_man"` |  |
 | projectMan.image.tag | string | `"latest"` |  |
 | projectMan.env.RELEASE_COOKIE | string | `"cookie"` |  |
@@ -49,8 +50,7 @@ A jet helm chart
 | breeze.nodeSelector | object | `{}` |  |
 | breeze.tolerations | list | `[]` |  |
 | breeze.affinity | object | `{}` |  |
-| breeze.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| breeze.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
+| breeze.env | object | `{}` | breeze 环境变量 |
 | traceAware.image.pullPolicy | string | `"IfNotPresent"` |  |
 | traceAware.image.repository | string | `"jet/trace_aware"` |  |
 | traceAware.image.tag | string | `"latest"` |  |
@@ -67,14 +67,14 @@ A jet helm chart
 | ingressroute.middlewares.corsSettings | object | `{}` | 跨域配置 |
 | backup | object | `{}` | 数据库备份设置 |
 | projectmandb.enabled | bool | `false` | 是否部署 projectmandb 数据库 |
-| projectmandb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
-| projectmandb.primary.initdb.scripts | string | `{}` | initdb 脚本字典 |
+| projectmandb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置）|
+| projectmandb.primary.initdb.scripts | object | `{}` | initdb 脚本字典 |
 | projectmandb.primary.persistence.enabled | bool | `false` | 使用PVC启用PostgreSQL主数据持久化 |
 | projectmandb.primary.pgHbaConfiguration | string | `""` | PostgreSQL 主客户端身份验证配置 |
 | projectmandb.shmVolume.sizeLimit | string | `"5Gi"` | 设置此项以启用 shm tmpfs 的大小限制 |
 | dynamicdb.enabled | bool | `false` | 是否部署 dynamicdb 数据库 |
-| dynamicdb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置） |
-| dynamicdb.primary.initdb.scripts | string | `{}` | 指定 PostgreSQL 密码以执行 initdb 脚本 |
+| dynamicdb.primary.extendedConfiguration | string | `""` | 扩展 PostgreSQL 主配置（附加到主配置或默认配置）|
+| dynamicdb.primary.initdb.scripts | object | `{}` | 指定 PostgreSQL 密码以执行 initdb 脚本 |
 | dynamicdb.primary.persistence.enabled | bool | `false` | 使用PVC启用PostgreSQL主数据持久化 |
 | dynamicdb.primary.pgHbaConfiguration | string | `""` | PostgreSQL 主客户端身份验证配置 |
 | dynamicdb.shmVolume.sizeLimit | string | `"5Gi"` | 设置此项以启用 shm tmpfs 的大小限制 |
@@ -188,11 +188,6 @@ image:
 ### 3. 设置环境变量
 
 ```yaml
-# 设置项目数据库的数据库名
-global:
-  dynamicdb:
-    database: dynamic_prod
-
 projectMan:
   env:
     RELEASE_NODE: sname
@@ -202,12 +197,6 @@ projectMan:
     # 项目数据库对外时的端口
     DYNAMIC_REPO_EXPOSED_PORT: "5432"
 
-breeze:
-  env:
-    # 项目数据库对外时的主机名
-    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    # 项目数据库对外时的端口
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
 traceAware:
   env:
     # 项目数据库对外时的主机名

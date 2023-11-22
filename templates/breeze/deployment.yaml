@@ -28,8 +28,6 @@ spec:
             - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:50051'
             - '-g'
             - '0.0.0.0:50052'
-          env:
-            {{- include "jet-helm-chart.secretKeys" . | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
