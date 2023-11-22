@@ -1,6 +1,6 @@
 Please visit the url:
 {{- $path := (.Values.jetSubpath | default "") }}
 {{- range $_, $host := .Values.hosts }}
-  https://{{ $host }}{{ $path }}
-  https://{{ $host }}{{ $path }}/breeze
+  {{ empty $.Values.certificate | ternary "http" "https" }}://{{ $host }}{{ $path }}
+  {{ empty $.Values.certificate | ternary "http" "https" }}://{{ $host }}{{ $path }}/breeze
 {{- end }}
