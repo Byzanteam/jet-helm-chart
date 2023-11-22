@@ -90,41 +90,10 @@ A jet helm chart
 - Install `traefik`
 - `helm dependency update`
 
-### 使用前请编写 release.values.yaml 文件
+### 使用前请编写 jet-env-secret.yaml 文件
 
-### 1. 设置镜像相关信息
+### 1. 设置 secret 参数
 
-```yaml
-projectMan:
-  image:
-    repository: jet/project_man
-    pullPolicy: IfNotPresent
-    tag: "latest"
-breeze:
-  image:
-    repository: jet/breeze
-    pullPolicy: IfNotPresent
-    tag: "latest"
-traceAware:
-  image:
-    repository: jet/trace_aware
-    pullPolicy: IfNotPresent
-    tag: "latest"
-```
-
-### 2. 设置拉取镜像凭证
-
-```yaml
-image:  
-  # 使用已存在的仓库凭证
-  existImageSecrets: ""
-```
-
-> [创建镜像拉取凭证说明](https://kubernetes.io/docs/concepts/configuration/secret/#docker-config-secrets)
-
-### 3. 设置 secret 参数
-
-手动创建 secret 资源存储环境变量信息
 ```yaml
 apiVersion: v1
 kind: Secret
@@ -184,7 +153,39 @@ data:
 > ```
 > :warning: 使用 base64 编码后填入 secret 资源文件对应 key 中
 
-### 4. 设置环境变量
+### 使用前请编写 release.values.yaml 文件
+
+### 1. 设置镜像相关信息
+
+```yaml
+projectMan:
+  image:
+    repository: jet/project_man
+    pullPolicy: IfNotPresent
+    tag: "latest"
+breeze:
+  image:
+    repository: jet/breeze
+    pullPolicy: IfNotPresent
+    tag: "latest"
+traceAware:
+  image:
+    repository: jet/trace_aware
+    pullPolicy: IfNotPresent
+    tag: "latest"
+```
+
+### 2. 设置拉取镜像凭证
+
+```yaml
+image:  
+  # 使用已存在的仓库凭证
+  existImageSecrets: ""
+```
+
+> [创建镜像拉取凭证说明](https://kubernetes.io/docs/concepts/configuration/secret/#docker-config-secrets)
+
+### 3. 设置环境变量
 
 ```yaml
 # 设置项目数据库的数据库名
@@ -215,7 +216,7 @@ traceAware:
     DYNAMIC_REPO_EXPOSED_PORT: "5432"
 ```
 
-### 5. 设置访问的 `hosts`
+### 4. 设置访问的 `hosts`
 
 ```yaml
 hosts:
@@ -223,7 +224,7 @@ hosts:
   - 10.0.0.1
 ```
 
-### 6. 设置 TLS 证书
+### 5. 设置 TLS 证书
 
 ```yaml
 certificate:
@@ -240,7 +241,7 @@ certificate:
 
 ### 1. 数据库依赖配置
 
-- 启用数据库前手动添加数据库依赖的 secrets
+- 启用数据库前手动添加 dependency-db-secret.yaml 文件
 
   ```yaml
   apiVersion: v1
@@ -259,6 +260,7 @@ certificate:
 - 设置数据库启用与数据持久化
 
   ```yaml
+  # release.values.yaml
   projectmandb:
     enabled: true
     persistence:
@@ -276,6 +278,7 @@ certificate:
 ### 2. 应用跨域设置
 
 ```yaml
+# release.values.yaml
 ingressroute:
   middlewares:
     corsSettings:
@@ -293,6 +296,8 @@ ingressroute:
 ### 3. 备份设置
 
 ```yaml
+# release.values.yaml
+
 # 使用velero备份数据库
 backup:
   # 设置数据库的自动备份。格式为“分、时、日、月、周”。
@@ -328,6 +333,7 @@ velero describe backups $backup_name --details
 
 ### 5. Subpath 支持
 ```yaml
+# release.values.yaml
 ingressroute:
   subpath: /jet
 ```
