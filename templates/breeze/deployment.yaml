@@ -29,18 +29,7 @@ spec:
             - '-g'
             - '0.0.0.0:50052'
           env:
-            {{- range .Values.global.existingSecret.keys }}
-            - name: {{ . | quote | upper }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $.Values.global.existingSecret.name }}
-                  key: {{ . | quote }}
-            {{- end }}
-            - name: DYNAMIC_REPO_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.global.existingSecret.name }}
-                  key: dynamicdb-password
+            {{- include "jet-helm-chart.secretKeys" . | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-breeze-env

@@ -27,13 +27,6 @@ A jet helm chart
 |-----|------|---------|-------------|
 | fullnameOverride | string | `""` |  |
 | nameOverride | string | `""` |  |
-| global.existingSecret.name | string | `jet-env-secret` |  |
-| global.existingSecret.keys[0] | string | `"credential_secret"` |  |
-| global.existingSecret.keys[1] | string | `"jet_jwt_private_key"` |  |
-| global.existingSecret.keys[2] | string | `"secret_key_base"` |  |
-| global.existingSecret.keys[3] | string | `"trace_aware_database_url"` |  |
-| global.existingSecret.keys[4] | string | `"project_man_database_url"` |  |
-| global.dynamicdb.database | string | `dynamic_prod` |  |
 | image.registry | string | `"registry.cn-hangzhou.aliyuncs.com"` | 镜像仓库地址  |
 | image.existImageSecrets | string | `""` | 已存在的镜像拉取凭证 secret |
 | projectMan.image.pullPolicy | string | `"IfNotPresent"` | 镜像拉取策略  |
@@ -42,10 +35,7 @@ A jet helm chart
 | projectMan.env.RELEASE_COOKIE | string | `"cookie"` |  |
 | projectMan.env.RELEASE_NODE | string | `"sname"` |  |
 | projectMan.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| projectMan.env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
 | projectMan.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
-| projectMan.env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库的主机名 |
-| projectMan.env.DYNAMIC_REPO_DATABASE | string | `"{{ .Values.global.dynamicdb.database }}"` | 项目数据库名 |
 | projectMan.replicaCount | int | `1` |  |
 | projectMan.resources | object | `{}` |  |
 | projectMan.nodeSelector | object | `{}` |  |
@@ -60,18 +50,12 @@ A jet helm chart
 | breeze.tolerations | list | `[]` |  |
 | breeze.affinity | object | `{}` |  |
 | breeze.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| breeze.env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
 | breeze.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
-| breeze.env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库的主机名 |
-| breeze.env.DYNAMIC_REPO_DATABASE | string | `"{{ .Values.global.dynamicdb.database }}"` | 项目数据库名 |
 | traceAware.image.pullPolicy | string | `"IfNotPresent"` |  |
 | traceAware.image.repository | string | `"jet/trace_aware"` |  |
 | traceAware.image.tag | string | `"latest"` |  |
 | traceAware.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| traceAware.env.DYNAMIC_REPO_USERNAME | string | `"postgres"` | 项目数据库用户名 |
 | traceAware.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
-| traceAware.env.DYNAMIC_REPO_HOSTNAME | string | `"dynamic-postgresql"` | 项目数据库的主机名 |
-| traceAware.env.DYNAMIC_REPO_DATABASE | string | `"{{ .Values.global.dynamicdb.database }}"` | 项目数据库名 |
 | traceAware.replicaCount | int | `1` |  |
 | traceAware.resources | object | `{}` |  |
 | traceAware.nodeSelector | object | `{}` |  |
@@ -149,28 +133,54 @@ metadata:
   namespace: # 与 jet 应用同一个 namespace
 type: Opaque
 data:
-  credential_secret: Z0JnTjZGNDE4M0xYS0ZiaUU12k0SWpVWUdPYk9sbXlLbTJPcA==
-  jet_jwt_private_key: DcGNMcGV0RDM1c3dxL2hub01TendKQVlS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==
-  secret_key_base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGF5LcVFhS2Z5eldQczRwQWViVQ==
-  trace_aware_database_url: ZWN0bzovL3Bvc3Rnc3N0Z3Jlc3FsL3RyYWNlX2F3YXJlX3Byb2Q=
-  project_man_database_url: ZWN0bzovL3Bvc3RncmVzOmZhOTllMjRlNDkyYWYJlc3FsL3Byb2plY3RfbWFuX3Byb2Q=
-  project-man-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
-  dynamicdb-password: N2YxMDI0N2VmMjg4MzY1YWNmOWI=
+  credential_secret: cnl6V1lCdFRYcS9hNlVVaUxuUWpGWGlTNUQzcC9IUzlHb3FMRzlxYmlzYkthL3BDeDcrUEFsMTJTWEEwSkU0dAo=
+  jet_jwt_private_key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRREIvN01pamt4ZXFodWEKSkJINmdHYmNmQkYxSThETlpzM2ZWa0hpaWVQVmdpc2ZGUmRtK3pQYTlSb0hCdFVNcVdOcVIzZ2VQcnhrNkw4cgpIaExWVlZMazhOb0Z6c3k1UWtVRjc1bmhaRURZMEtIcGl1dTVpSWVENndLSE9CYVQ5NGhJRWRmV1NGdUVhY0JUCkpWMk1BaktyWWkzdmc2K21JWFBVaTVwdmRReEZjb0tQaFVYOS9VR3BUblMyR1hUZSt2VStzQWN0K1pHdTJsNm4KNUg1WllHZGV3VHpYSGI4UkFGQTBTbHY5TlFnallBV0NWWTA2andRMGxvZVo4NXI2eTdkYUxoY0J1eWRTVXhucQpjRDBVMWhINGRad1gxcXdGZEtJaFhvdGpHTnJqd25rUExKK0tML2ZZeFVnTExxZWN1R3c2LzFhNnlSdjhVRFJDCnlpY3FYZjc5QWdNQkFBRUNnZ0VBQnJwWVJlVUZ6S3luNjJjVks5NVljdUlSOVpiZXEyRHdMUzdWSWNiNEhLSDQKaVRTV2pLN3BPVTZSeEt6ekpqbHVVTFBDSnk1ZXplaHRKTkRVcjJCWHBuS2NqN2RWemV1alJZQkRQUmdESmJjZgo2UXBmMVhNMk1VTFh0Mi9MQjFPbzFCMnc5Mlg5Vjl0cnNrRXBVWW5oVHZueDJqZHpiU3dHS1M0SmxqNzFiMzBUCklpNkY2MkFjM0I3bWVMR21ZOTZBWFpvSGVEQ2dhalhXUEFrdGo5SGJ2eCtZVnlZS2FRTG4xei9tWmlkV1ByeFoKR09UZDVwUWVIN3FyZ0EwT0JqSG5pNy9WcmtmTjU5RURuQlA2WW54S2NhQ0ZwQXFsSzNTOU9XNTJNNXBxZnFxWApDQkorMlJyMUh3dU5VZUhxZGdNbHp5dUtaNnE0eXlFR3dWVGFLa3NsQVFLQmdRRDFBMExjWXYxdjl0STcrRWUrCkxBMnVJbjhHMmp3UUlnV3pRN29VR09vL0tuL083OEMvYThtbDNabkc4U281VjFPRTgrc1BwNElUR3RVUE1Tci8KMVdmdjMvdm02c3R0Q3RKRWZkM2E1d293eHZmc3BYNFp5aDRQVy9PdzRONGVucVBlLy9OY1UwUGN5RXVXeFF5QwpXTDRObnhlWVpRRnBDaHBONjREdUNLRzZmUUtCZ1FES3Nzem5nVWNEN0w2U2FDcGlvanRKMXR1WTdDbHF4MXFLCngzRzlTRnJmaWJuRHpFQWV0VHA1WE5Ic2s3UDFoRGNGbHBZSE9HQ2s1dFNjZHhBeUd0UXkrRWtLczE1MjFjVWUKRUNuMDN2aEkwNWhQNHorMklkRmhsajF5WHQ0ZXIwbDVmV0NlWEx1dlQyWmZQdVh3NzU4QlhqTEV3Q3NIVHIzVApUWXkvZ2VQK2dRS0JnUURjTVV3YmFGTkFGbUFtU1NHZ3hWS2VGcDUyZUJiV29OemltSkZZa25PaXhQMEw2dWdjCm9EQWZBcUs2NmUzNmpvS2V6OStHdUJIc1BZY1JHaXo4c3J1d0ZtbjZ3elNERU9DYmNVcTYranhzVGNSdVJ1U24KSk1BVEtaNCtiamp3NTcxNklpaUI1c3JzVm8yb04vcmdBZ1Q3bE9qTnFxaXp6OEtJR0loTVpER0V1UUtCZ0VGRgpzcFlhR3pRNFdHWHRCVGtkNU5teVJxVEg1ODVxdzgxTXpHT1htU3ZDdmY4L0ZxYk0xVGVmbkRvQ2xrREpncTVaCi81WHpvYXQ0YVo2NCtJNHA5WXMwU05FWlVhSVMxSmNKdlhrTkZBYmZuSHlkUVRiMVRPZVA2ZG1ha3d4dWhjcUoKaFVONXVUYUs2dnhnMU1yeFh0S2g4dGRJeXBKZjJPRGlhQ0NEUTFnQkFvR0FaeFMvbmkwZjNNWTZ5V1VPc2p3aApsbWhxbHNlY0lhOVdFM2FPaFoxeTJQRWEwTksyRG9KVkZ4bWNzUFNqYkVrUktFRERXNjI5endtQzJRVlFaWWxPCkZYcXhaWXdnOEhKcEYvNmIvN3FzOU96QzltZ2FpRjFFYURSenNaZXRvWGsxZ29UY0dQWXlFZHNWY1ovQ0Uxb28KRDFPM2pyenFSM3QzeW9YM0x0OTBGdU09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+  secret_key_base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGFxVG5FL0JvSFFmc0dBd25LcVFhS2Z5eldQczRwQWViVSAtbgo=
+  trace_aware_database_url: ZWN0bzovL3Bvc3RncmVzOmNoYW5nZWl0QGpldC1wb3N0Z3Jlc3FsL3RyYWNlX2F3YXJlX3Byb2Q==
+  project_man_database_url: ZWN0bzovL3Bvc3RncmVzOmNoYW5nZWl0QGpldC1wb3N0Z3Jlc3FsL3Byb2plY3RfbWFuX3Byb2Q==
+  dynamic-database-url: ZWN0bzovL3Bvc3RncmVzOmNoYW5nZWl0QGR5bmFtaWMtcG9zdGdyZXNxbC9keW5hbWljX3Byb2Q=
 ```
 > 参数解释如下：
 > ```yaml
 > # 用于加密应用数据库密码的密钥（`openssl rand -base64 48`）
-> credential_secret: ""
-> # 项目数据库密码
-> dynamicdb-password: ""
+> credential-secret: "AU27PtMelV3aojYkOgvYIJjnBoQ5gRhRFuYYOeLVZ8XbG7V3S8GRvSB0pT14qwpj"
 > # Jet 用于签名 JWT 的 RSA 私钥
-> jet_jwt_private_key: ""
+> jet_jwt_private_key: "-----BEGIN PRIVATE KEY-----
+> MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDB/7Mijkxeqhua
+> JBH6gGbcfBF1I8DNZs3fVkHiiePVgisfFRdm+zPa9RoHBtUMqWNqR3gePrxk6L8r
+> HhLVVVLk8NoFzsy5QkUF75nhZEDY0KHpiuu5iIeD6wKHOBaT94hIEdfWSFuEacBT
+> JV2MAjKrYi3vg6+mIXPUi5pvdQxFcoKPhUX9/UGpTnS2GXTe+vU+sAct+ZGu2l6n
+> 5H5ZYGdewTzXHb8RAFA0Slv9NQgjYAWCVY06jwQ0loeZ85r6y7daLhcBuydSUxnq
+> cD0U1hH4dZwX1qwFdKIhXotjGNrjwnkPLJ+KL/fYxUgLLqecuGw6/1a6yRv8UDRC
+> yicqXf79AgMBAAECggEABrpYReUFzKyn62cVK95YcuIR9Zbeq2DwLS7VIcb4HKH4
+> iTSWjK7pOU6RxKzzJjluULPCJy5ezehtJNDUr2BXpnKcj7dVzeujRYBDPRgDJbcf
+> 6Qpf1XM2MULXt2/LB1Oo1B2w92X9V9trskEpUYnhTvnx2jdzbSwGKS4Jlj71b30T
+> Ii6F62Ac3B7meLGmY96AXZoHeDCgajXWPAktj9Hbvx+YVyYKaQLn1z/mZidWPrxZ
+> GOTd5pQeH7qrgA0OBjHni7/VrkfN59EDnBP6YnxKcaCFpAqlK3S9OW52M5pqfqqX
+> CBJ+2Rr1HwuNUeHqdgMlzyuKZ6q4yyEGwVTaKkslAQKBgQD1A0LcYv1v9tI7+Ee+
+> LA2uIn8G2jwQIgWzQ7oUGOo/Kn/O78C/a8ml3ZnG8So5V1OE8+sPp4ITGtUPMSr/
+> 1Wfv3/vm6sttCtJEfd3a5wowxvfspX4Zyh4PW/Ow4N4enqPe//NcU0PcyEuWxQyC
+> WL4NnxeYZQFpChpN64DuCKG6fQKBgQDKsszngUcD7L6SaCpiojtJ1tuY7Clqx1qK
+> x3G9SFrfibnDzEAetTp5XNHsk7P1hDcFlpYHOGCk5tScdxAyGtQy+EkKs1521cUe
+> ECn03vhI05hP4z+2IdFhlj1yXt4er0l5fWCeXLuvT2ZfPuXw758BXjLEwCsHTr3T
+> TYy/geP+gQKBgQDcMUwbaFNAFmAmSSGgxVKeFp52eBbWoNzimJFYknOixP0L6ugc
+> oDAfAqK66e36joKez9+GuBHsPYcRGiz8sruwFmn6wzSDEOCbcUq6+jxsTcRuRuSn
+> JMATKZ4+bjjw5716IiiB5srsVo2oN/rgAgT7lOjNqqizz8KIGIhMZDGEuQKBgEFF
+> spYaGzQ4WGXtBTkd5NmyRqTH585qw81MzGOXmSvCvf8/FqbM1TefnDoClkDJgq5Z
+> /5Xzoat4aZ64+I4p9Ys0SNEZUaIS1JcJvXkNFAbfnHydQTb1TOeP6dmakwxuhcqJ
+> hUN5uTaK6vxg1MrxXtKh8tdIypJf2ODiaCCDQ1gBAoGAZxS/ni0f3MY6yWUOsjwh
+> lmhqlsecIa9WE3aOhZ1y2PEa0NK2DoJVFxmcsPSjbEkRKEDDW629zwmC2QVQZYlO
+> FXqxZYwg8HJpF/6b/7qs9OzC9mgaiF1EaDRzsZetoXk1goTcGPYyEdsVcZ/CE1oo
+> D1O3jrzqR3t3yoX3Lt90FuM=
+> -----END PRIVATE KEY-----"
 > # Phoenix 用于生成会话密码的密钥
-> secret_key_base: ""
+> secret_key_base: "Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU"
 > # Trace Aware 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
-> trace_aware_database_url: ""
+> trace_aware_database_url: "ecto://postgres:changeit@jet-postgresql/trace_aware_prod"
 > # Jet 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
-> project_man_database_url: ""
+> project_man_database_url: "ecto://postgres:changeit@jet-postgresql/project_man_prod"
+> # 项目数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
+> dynamic-database-url: "ecto://postgres:changeit@dynamic-postgresql/dynamic_prod"
 > ```
 > :warning: 使用 base64 编码后填入 secret 资源文件对应 key 中
 
@@ -188,33 +198,21 @@ projectMan:
     RELEASE_COOKIE: cookie
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    # 项目数据库用户名
-    DYNAMIC_REPO_USERNAME: postgres
-    # 项目数据库端口
+    # 项目数据库对外时的端口
     DYNAMIC_REPO_EXPOSED_PORT: "5432"
-    # 项目数据库的主机名
-    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
 
 breeze:
   env:
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    # 项目数据库用户名
-    DYNAMIC_REPO_USERNAME: postgres
-    # 项目数据库端口
+    # 项目数据库对外时的端口
     DYNAMIC_REPO_EXPOSED_PORT: "5432"
-    # 项目数据库的主机名
-    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
 traceAware:
   env:
     # 项目数据库对外时的主机名
     DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    # 项目数据库用户名
-    DYNAMIC_REPO_USERNAME: postgres
-    # 项目数据库端口
+    # 项目数据库对外时的端口
     DYNAMIC_REPO_EXPOSED_PORT: "5432"
-    # 项目数据库的主机名
-    DYNAMIC_REPO_HOSTNAME: dynamic-postgresql
 ```
 
 ### 5. 设置访问的 `hosts`
@@ -248,11 +246,12 @@ certificate:
   apiVersion: v1
   kind: Secret
   metadata:
-    name: jet-env-secret
+    name: dependency-db-secret
     namespace: # 与 jet 应用同一个 namespace
   type: Opaque
   data:
     project-man-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
+    dynamic-password: ZmE5OWUyNGU0OTJhZjg4NTZmMDE=
   ```
   
   > :warning: 使用 base64 编码密码后设置给对应的 `project-man-password`  变量

@@ -56,7 +56,7 @@ tests:
           content:
             secretKeyRef:
               name: jet-env-secret
-              key: credential_secret
+              key: credential-secret
       - equal:
           path: spec.template.spec.containers[0].env[1].name
           value: JET_JWT_PRIVATE_KEY
@@ -65,7 +65,7 @@ tests:
           content:
             secretKeyRef:
               name: jet-env-secret
-              key: jet_jwt_private_key
+              key: jet-jwt-private-key
       - equal:
           path: spec.template.spec.containers[0].env[2].name
           value: SECRET_KEY_BASE
@@ -74,7 +74,7 @@ tests:
           content:
             secretKeyRef:
               name: jet-env-secret
-              key: secret_key_base
+              key: secret-key-base
       - equal:
           path: spec.template.spec.containers[0].env[3].name
           value: TRACE_AWARE_DATABASE_URL
@@ -83,7 +83,7 @@ tests:
           content:
             secretKeyRef:
               name: jet-env-secret
-              key: trace_aware_database_url
+              key: trace-aware-database-url
       - equal:
           path: spec.template.spec.containers[0].env[4].name
           value: PROJECT_MAN_DATABASE_URL
@@ -92,13 +92,13 @@ tests:
           content:
             secretKeyRef:
               name: jet-env-secret
-              key: project_man_database_url
+              key: project-man-database-url
       - equal:
           path: spec.template.spec.containers[0].env[5].name
-          value: DYNAMIC_REPO_PASSWORD
+          value: DYNAMIC_DATABASE_URL
       - isSubset: 
           path: spec.template.spec.containers[0].env[5].valueFrom
           content:
             secretKeyRef:
               name: jet-env-secret
-              key: dynamicdb-password
+              key: dynamic-database-url
