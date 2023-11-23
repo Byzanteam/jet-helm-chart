@@ -31,7 +31,7 @@ app.kubernetes.io/application: project-man
 {/*
 Build secret keys
 */}
-{{- define "jet-helm-chart.secretKeys" -}}
+{{- define "jet-helm-chart.projectManSecretKeys" -}}
 {{- $keys := list }}
 {{- $keys = append $keys "credential-secret" }}
 {{- $keys = append $keys "jet-jwt-private-key" }}
@@ -42,7 +42,7 @@ Build secret keys
 - name: {{ $key | quote | replace "-" "_" | upper }}
   valueFrom:
     secretKeyRef:
-      name: {{ $.Values.existingJetSecret.name }}
+      name: {{ $.Values.existingJetSecret }}
       key: {{ $key | quote }}
 {{- end }}
 {{- end }}

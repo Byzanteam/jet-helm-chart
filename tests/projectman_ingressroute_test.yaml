@@ -16,7 +16,7 @@ tests:
           path: spec.routes[0].middlewares[0].name
           value: RELEASE-NAME-jet-helm-chart-compress
 
-  - it: should render middleware append cors and strip-prefix
+  - it: should render web middleware append cors and strip-prefix
     values:
       - ./values/test.yaml
     asserts:
@@ -33,6 +33,21 @@ tests:
           path: spec.routes[0].middlewares[3].name
           value: RELEASE-NAME-jet-helm-chart-redirect-to-https
         documentIndex: 0
+
+  - it: should render websecure middleware append cors and strip-prefix
+    values:
+      - ./values/test.yaml
+    asserts:
+      - equal:
+          path: spec.routes[0].middlewares[0].name
+          value: RELEASE-NAME-jet-helm-chart-strip-prefix
+      - equal:
+          path: spec.routes[0].middlewares[1].name
+          value: RELEASE-NAME-jet-helm-chart-cors
+      - equal:
+          path: spec.routes[0].middlewares[2].name
+          value: RELEASE-NAME-jet-helm-chart-compress
+        documentIndex: 1
 
   - it: should render middleware if set certificate
     values:

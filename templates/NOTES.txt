@@ -1,6 +1,9 @@
 Please visit the url:
 {{- $path := (.Values.jetSubpath | default "") }}
 {{- range $_, $host := .Values.hosts }}
-  {{ empty $.Values.certificate | ternary "http" "https" }}://{{ $host }}{{ $path }}
+Project man:
+  {{ empty $.Values.certificate | ternary "http" "https" }}://{{ $host }}{{ $path }}/api/v1/project/graphql.sdl
+  {{ empty $.Values.certificate | ternary "http" "https" }}://{{ $host }}{{ $path }}/api/v1/project/explorer
+Breeze:
   {{ empty $.Values.certificate | ternary "http" "https" }}://{{ $host }}{{ $path }}/breeze
 {{- end }}

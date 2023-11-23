@@ -5,8 +5,7 @@
 nameOverride: ""
 fullnameOverride: ""
 
-existingJetSecret:
-  name: jet-env-secret
+existingJetSecret: jet-env-secret
 
 image:
   registry: registry.cn-hangzhou.aliyuncs.com

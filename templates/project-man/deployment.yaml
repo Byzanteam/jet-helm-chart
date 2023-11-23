@@ -44,7 +44,7 @@ spec:
           image: {{ include "jet-helm-chart.projectManImage" . }}
           imagePullPolicy: {{ .Values.projectMan.image.pullPolicy }}
           env:
-            {{- include "jet-helm-chart.secretKeys" . | nindent 12 }}
+            {{- include "jet-helm-chart.projectManSecretKeys" . | nindent 12 }}
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-project-man-env

@@ -46,6 +46,14 @@ tests:
           path: spec.template.spec.imagePullSecrets[0].name
           value: docker-registry-secret
 
+  - it: should render postgresql init container
+    set:
+      projectmandb:
+        enabled: true
+    asserts:
+      - isNotNull:
+          path: spec.template.spec.initContainers[1]
+
   - it: render containers env
     asserts:
       - equal:
