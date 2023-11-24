@@ -1,0 +1,9 @@
+fullnameOverride: jet
+image:
+  existingImageSecret: docker-registry-secret
+hosts:
+  - example.com
+projectmandb:
+  enabled: true
+dynamicdb:
+  enabled: true

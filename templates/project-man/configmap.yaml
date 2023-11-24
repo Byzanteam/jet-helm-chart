@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    {{- include "jet-helm-chart.labels" . | nindent 4 }}
+  name: {{ include "jet-helm-chart.fullname" . }}-project-man-env
+data:
+  {{- tpl (.Values.projectMan.env | toYaml | nindent 2) . }}
+  BREEZE_GRPC_ADDRESS: {{ include "jet-helm-chart.breezeAddress" . }}
+  JET_API_ENDPOINT: {{ include "jet-helm-chart.jetApiEndpoint" . }}
+  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
+

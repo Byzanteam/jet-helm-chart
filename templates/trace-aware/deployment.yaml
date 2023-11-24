@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jet-helm-chart.fullname" . }}-trace-aware
+  labels:
+    {{- include "jet-helm-chart.traceAwareLabels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.traceAware.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "jet-helm-chart.traceAwareSelectorLabels" . | nindent 8 }}
+    spec:
+      {{- if .Values.image.existingImageSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.existingImageSecret }}
+      {{- end }}
+      initContainers:
+        {{- if .Values.projectmandb.enabled }}
+        - name: init-trace-aware-db
+          image: byzanteam/psql
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dependency-db-secret
+                  key: project-man-password
+          command:
+            - 'sh'
+            - '-c'
+            - 'until psql -c "SELECT 1" "user=postgres dbname=trace_aware_prod host={{ .Values.projectmandb.fullnameOverride }}"; do echo waiting for trace aware db; sleep 2; done'
+        {{- end }}
+      containers:
+        - name: {{ include "jet-helm-chart.fullname" . }}-trace-aware
+          image: {{ include "jet-helm-chart.traceAwareImage" . }}
+          imagePullPolicy: {{ .Values.traceAware.image.pullPolicy }}
+          env:
+            - name: TRACE_AWARE_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingJetSecret }}
+                  key: trace-aware-database-url
+          envFrom:
+            - configMapRef:
+                name: {{ include "jet-helm-chart.fullname" . }}-trace-aware-env
+          ports:
+            - name: trace-aware
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.traceAware.resources | nindent 12 }}
+      {{- with .Values.traceAware.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.traceAware.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.traceAware.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

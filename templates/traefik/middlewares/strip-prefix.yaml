@@ -1,0 +1,11 @@
+{{- if .Values.ingressroute.subpath }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "jet-helm-chart.fullname" . }}-strip-prefix
+spec:
+  stripPrefix:
+    prefixes:
+      - {{ .Values.ingressroute.subpath }}
+    forceSlash: true
+{{- end }}
