@@ -8,7 +8,7 @@ tests:
     asserts:
       - equal:
           path: spec.routes[0].match
-          value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet/breeze`)
+          value: (Host(`jet.work`) || Host(`localhost`)) && (PathPrefix(`/jet/breeze/api/v1`) || PathPrefix(`/jet/breeze/api/v1/explorer`) || PathPrefix(`/jet/breeze/api/v1/graphql.sdl`))
 
   - it: should render middleware by default
     asserts:

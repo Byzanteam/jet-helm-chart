@@ -8,7 +8,10 @@ tests:
     asserts:
       - equal:
           path: spec.routes[0].match
-          value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet`)
+          value: (Host(`jet.work`) || Host(`localhost`)) && (PathPrefix(`/jet/jet/api/v1`) || PathPrefix(`/jet/jet/api/v1/explorer`) || PathPrefix(`/jet/jet/api/v1/graphql.sdl`))
+      - equal:
+          path: spec.routes[1].match
+          value: (Host(`jet.work`) || Host(`localhost`)) && (PathPrefix(`/jet/plugin/api/v1`) || PathPrefix(`/jet/plugin/api/v1/explorer`) || PathPrefix(`/jet/plugin/api/v1/graphql.sdl`))
 
   - it: should render middleware by default
     asserts:

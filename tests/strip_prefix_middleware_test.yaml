@@ -15,5 +15,7 @@ tests:
           path: spec.stripPrefix
           content:
             prefixes:
-              - /jet
+              - /jet/jet
+              - /jet/plugin
+              - /jet/breeze
             forceSlash: true
