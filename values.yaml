@@ -23,8 +23,6 @@ projectMan:
     PROJECT_MAN_DYNAMIC_REPO_EXPOSED_PORT: "5432"
     PROJECT_MAN_API_HOST: project_man
     PLUGIN_API_HOST: project_man
-    PROJECT_MAN_ECTO_IPV6: "false"
-    TRACE_AWARE_ECTO_IPV6: "false"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
