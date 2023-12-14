@@ -7,6 +7,8 @@ metadata:
 data:
   {{- tpl (.Values.projectMan.env | toYaml | nindent 2) . }}
   BREEZE_GRPC_ADDRESS: {{ include "jet-helm-chart.breezeAddress" . }}
-  JET_API_ENDPOINT: {{ include "jet-helm-chart.jetApiEndpoint" . }}
-  PROJECT_MAN_GRPC_SERVER_PORT: "50051"
+  RUNTIME_SERVER_GRPC_SERVER_PORT: "50051"
+  TRACE_AWARE_GRPC_SERVER_PORT: "50052"
+  PLUGIN_API_PORT: "8090"
+  PROJECT_MAN_API_PORT: "8080"
 
