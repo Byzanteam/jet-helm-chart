@@ -6,6 +6,8 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - {{ .Values.ingressroute.subpath }}
+      - {{ include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/jet") }}
+      - {{ include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/plugin") }}
+      - {{ include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/breeze") }}
     forceSlash: true
 {{- end }}
