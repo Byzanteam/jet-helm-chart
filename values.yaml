@@ -13,7 +13,7 @@ image:
 
 projectMan:
   image:
-    repository: jet/jet
+    repository: jet/project_man
     pullPolicy: IfNotPresent
     tag: "latest"
   env:
