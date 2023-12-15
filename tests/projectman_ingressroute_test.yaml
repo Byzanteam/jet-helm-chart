@@ -8,15 +8,24 @@ tests:
     asserts:
       - equal:
           path: spec.routes[0].match
-          value: (Host(`jet.work`) || Host(`localhost`)) && (PathPrefix(`/jet/jet/api/v1`) || PathPrefix(`/jet/jet/api/v1/explorer`) || PathPrefix(`/jet/jet/api/v1/graphql.sdl`))
+          value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet/jet`)
       - equal:
           path: spec.routes[1].match
-          value: (Host(`jet.work`) || Host(`localhost`)) && (PathPrefix(`/jet/plugin/api/v1`) || PathPrefix(`/jet/plugin/api/v1/explorer`) || PathPrefix(`/jet/plugin/api/v1/graphql.sdl`))
+          value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet/plugin`)
 
   - it: should render middleware by default
     asserts:
       - equal:
           path: spec.routes[0].middlewares[0].name
+          value: RELEASE-NAME-jet-helm-chart-strip-prefix
+      - equal:
+          path: spec.routes[0].middlewares[1].name
+          value: RELEASE-NAME-jet-helm-chart-compress
+      - equal:
+          path: spec.routes[1].middlewares[0].name
+          value: RELEASE-NAME-jet-helm-chart-strip-prefix
+      - equal:
+          path: spec.routes[1].middlewares[1].name
           value: RELEASE-NAME-jet-helm-chart-compress
 
   - it: should render web middleware append cors and strip-prefix
