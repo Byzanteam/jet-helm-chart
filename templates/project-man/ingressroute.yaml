@@ -8,14 +8,14 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{include "jet-helm-chart.rulePathPrefixs" (dict "jetPrefix" .Values.ingressroute.subpath "componentPrefix" "/jet") }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/jet")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
           port: 8080
       middlewares:
         {{- include "jet-helm-chart.webMiddlewares" . | nindent 8}}
-    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{include "jet-helm-chart.rulePathPrefixs" (dict "jetPrefix" .Values.ingressroute.subpath "componentPrefix" "/plugin") }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/plugin")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
@@ -34,14 +34,14 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{include "jet-helm-chart.rulePathPrefixs" (dict "jetPrefix" .Values.ingressroute.subpath "componentPrefix" "/jet") }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/jet")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
           port: 8080
       middlewares:
         {{- include "jet-helm-chart.websecureMiddlewares" . | nindent 8}}
-    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{include "jet-helm-chart.rulePathPrefixs" (dict "jetPrefix" .Values.ingressroute.subpath "componentPrefix" "/plugin") }}
+    - match: {{ include "jet-helm-chart.ruleHosts" . }} && {{ printf "PathPrefix(`%s`)" (include "jet-helm-chart.buildPath" (dict "prefix" .Values.ingressroute.subpath "path" "/plugin")) }}
       kind: Rule
       services:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man
