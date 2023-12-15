@@ -24,9 +24,7 @@ Middlewares for web ingress-routes
 */}}
 {{- define "jet-helm-chart.webMiddlewares" -}}
 {{- $webMiddlewares := list }}
-{{- if .Values.ingressroute.subpath }}
 {{- $webMiddlewares = append $webMiddlewares "strip-prefix" }}
-{{- end }}
 {{- if .Values.ingressroute.middlewares.corsSettings }}
 {{- $webMiddlewares = append $webMiddlewares "cors" }}
 {{- end }}
@@ -44,9 +42,7 @@ Middlewares for websecure ingress-routes
 */}}
 {{- define "jet-helm-chart.websecureMiddlewares" -}}
 {{- $websecureMiddlewares := list }}
-{{- if .Values.ingressroute.subpath }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "strip-prefix" }}
-{{- end }}
 {{- if .Values.ingressroute.middlewares.corsSettings }}
 {{- $websecureMiddlewares = append $websecureMiddlewares "cors" }}
 {{- end }}

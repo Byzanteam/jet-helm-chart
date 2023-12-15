@@ -49,11 +49,17 @@ spec:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-project-man-env
           ports:
-            - name: proj-man-grpc
+            - name: runtime-grpc
               containerPort: 50051
               protocol: TCP
-            - name: proj-man-http
-              containerPort: 80
+            - name: traceaware-grpc
+              containerPort: 50052
+              protocol: TCP
+            - name: projectman-api
+              containerPort: 8080
+              protocol: TCP
+            - name: plugin-api
+              containerPort: 8090
               protocol: TCP
           resources:
             {{- toYaml .Values.projectMan.resources | nindent 12 }}

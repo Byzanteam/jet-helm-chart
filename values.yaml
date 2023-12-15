@@ -13,14 +13,18 @@ image:
 
 projectMan:
   image:
-    repository: jet/jet
+    repository: jet/project_man
     pullPolicy: IfNotPresent
     tag: "latest"
   env:
     RELEASE_NODE: sname
     RELEASE_COOKIE: cookie
-    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    PROJECT_MAN_DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    PROJECT_MAN_DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    PROJECT_MAN_API_HOST: project_man
+    PLUGIN_API_HOST: project_man
+    PROJECT_MAN_ECTO_IPV6: "false"
+    TRACE_AWARE_ECTO_IPV6: "false"
   replicaCount: 1
   resources: {}
   nodeSelector: {}
@@ -29,16 +33,6 @@ projectMan:
 breeze:
   image:
     repository: jet/breeze
-    pullPolicy: IfNotPresent
-    tag: "latest"
-  replicaCount: 1
-  resources: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-traceAware:
-  image:
-    repository: jet/trace_aware
     pullPolicy: IfNotPresent
     tag: "latest"
   replicaCount: 1
@@ -127,7 +121,6 @@ projectmandb:
 
           psql -v ON_ERROR_STOP=1 --username "postgres" --dbname "postgres" <<-EOSQL
           CREATE DATABASE project_man_prod;
-          CREATE DATABASE trace_aware_prod;
           EOSQL
     name: production
     persistence:

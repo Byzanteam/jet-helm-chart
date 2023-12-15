@@ -35,8 +35,12 @@ A jet helm chart
 | projectMan.image.tag | string | `"latest"` |  |
 | projectMan.env.RELEASE_COOKIE | string | `"cookie"` |  |
 | projectMan.env.RELEASE_NODE | string | `"sname"` |  |
-| projectMan.env.DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
-| projectMan.env.DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
+| projectMan.env.PROJECT_MAN_DYNAMIC_REPO_EXPOSED_HOSTNAME | string | `"dynamic_prod"` | 项目数据库对外时的主机名 |
+| projectMan.env.PROJECT_MAN_DYNAMIC_REPO_EXPOSED_PORT | string | `"5432"` | 项目数据库对外时的端口 |
+| projectMan.env.PROJECT_MAN_API_HOST | string | `"project_man"` |  |
+| projectMan.env.PLUGIN_API_HOST | string | `"project_man"` |  |
+| projectMan.env.PROJECT_MAN_ECTO_IPV6 | string | `"false"` | 决定 ecto 连接是否使用 IPv6 |
+| projectMan.env.TRACE_AWARE_ECTO_IPV6 | string | `"false"` | 决定 ecto 连接是否使用 IPv6 |
 | projectMan.replicaCount | int | `1` |  |
 | projectMan.resources | object | `{}` |  |
 | projectMan.nodeSelector | object | `{}` |  |
@@ -50,14 +54,6 @@ A jet helm chart
 | breeze.nodeSelector | object | `{}` |  |
 | breeze.tolerations | list | `[]` |  |
 | breeze.affinity | object | `{}` |  |
-| traceAware.image.pullPolicy | string | `"IfNotPresent"` |  |
-| traceAware.image.repository | string | `"jet/trace_aware"` |  |
-| traceAware.image.tag | string | `"latest"` |  |
-| traceAware.replicaCount | int | `1` |  |
-| traceAware.resources | object | `{}` |  |
-| traceAware.nodeSelector | object | `{}` |  |
-| traceAware.tolerations | list | `[]` |  |
-| traceAware.affinity | object | `{}` |  |
 | hosts | list | `[]` | jet 的访问地址 |
 | certificate | object | `{}` | tls 证书 |
 | ingressroute.subpath | string | `""` | jet 子路径 |
@@ -99,19 +95,20 @@ metadata:
   namespace: # 与 jet 应用同一个 namespace
 type: Opaque
 data:
-  credential-secret: cnl6V1lCdFRYcS9hNlVVaUxuUWpGWGlTNUQzcC9IUzlHb3FMRzlxYmlzYkthL3BDeDcrUEFsMTJTWEEwSkU0dAo=
-  jet-jwt-private-key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRREIvN01pamt4ZXFodWEKSkJINmdHYmNmQkYxSThETlpzM2ZWa0hpaWVQVmdpc2ZGUmRtK3pQYTlSb0hCdFVNcVdOcVIzZ2VQcnhrNkw4cgpIaExWVlZMazhOb0Z6c3k1UWtVRjc1bmhaRURZMEtIcGl1dTVpSWVENndLSE9CYVQ5NGhJRWRmV1NGdUVhY0JUCkpWMk1BaktyWWkzdmc2K21JWFBVaTVwdmRReEZjb0tQaFVYOS9VR3BUblMyR1hUZSt2VStzQWN0K1pHdTJsNm4KNUg1WllHZGV3VHpYSGI4UkFGQTBTbHY5TlFnallBV0NWWTA2andRMGxvZVo4NXI2eTdkYUxoY0J1eWRTVXhucQpjRDBVMWhINGRad1gxcXdGZEtJaFhvdGpHTnJqd25rUExKK0tML2ZZeFVnTExxZWN1R3c2LzFhNnlSdjhVRFJDCnlpY3FYZjc5QWdNQkFBRUNnZ0VBQnJwWVJlVUZ6S3luNjJjVks5NVljdUlSOVpiZXEyRHdMUzdWSWNiNEhLSDQKaVRTV2pLN3BPVTZSeEt6ekpqbHVVTFBDSnk1ZXplaHRKTkRVcjJCWHBuS2NqN2RWemV1alJZQkRQUmdESmJjZgo2UXBmMVhNMk1VTFh0Mi9MQjFPbzFCMnc5Mlg5Vjl0cnNrRXBVWW5oVHZueDJqZHpiU3dHS1M0SmxqNzFiMzBUCklpNkY2MkFjM0I3bWVMR21ZOTZBWFpvSGVEQ2dhalhXUEFrdGo5SGJ2eCtZVnlZS2FRTG4xei9tWmlkV1ByeFoKR09UZDVwUWVIN3FyZ0EwT0JqSG5pNy9WcmtmTjU5RURuQlA2WW54S2NhQ0ZwQXFsSzNTOU9XNTJNNXBxZnFxWApDQkorMlJyMUh3dU5VZUhxZGdNbHp5dUtaNnE0eXlFR3dWVGFLa3NsQVFLQmdRRDFBMExjWXYxdjl0STcrRWUrCkxBMnVJbjhHMmp3UUlnV3pRN29VR09vL0tuL083OEMvYThtbDNabkc4U281VjFPRTgrc1BwNElUR3RVUE1Tci8KMVdmdjMvdm02c3R0Q3RKRWZkM2E1d293eHZmc3BYNFp5aDRQVy9PdzRONGVucVBlLy9OY1UwUGN5RXVXeFF5QwpXTDRObnhlWVpRRnBDaHBONjREdUNLRzZmUUtCZ1FES3Nzem5nVWNEN0w2U2FDcGlvanRKMXR1WTdDbHF4MXFLCngzRzlTRnJmaWJuRHpFQWV0VHA1WE5Ic2s3UDFoRGNGbHBZSE9HQ2s1dFNjZHhBeUd0UXkrRWtLczE1MjFjVWUKRUNuMDN2aEkwNWhQNHorMklkRmhsajF5WHQ0ZXIwbDVmV0NlWEx1dlQyWmZQdVh3NzU4QlhqTEV3Q3NIVHIzVApUWXkvZ2VQK2dRS0JnUURjTVV3YmFGTkFGbUFtU1NHZ3hWS2VGcDUyZUJiV29OemltSkZZa25PaXhQMEw2dWdjCm9EQWZBcUs2NmUzNmpvS2V6OStHdUJIc1BZY1JHaXo4c3J1d0ZtbjZ3elNERU9DYmNVcTYranhzVGNSdVJ1U24KSk1BVEtaNCtiamp3NTcxNklpaUI1c3JzVm8yb04vcmdBZ1Q3bE9qTnFxaXp6OEtJR0loTVpER0V1UUtCZ0VGRgpzcFlhR3pRNFdHWHRCVGtkNU5teVJxVEg1ODVxdzgxTXpHT1htU3ZDdmY4L0ZxYk0xVGVmbkRvQ2xrREpncTVaCi81WHpvYXQ0YVo2NCtJNHA5WXMwU05FWlVhSVMxSmNKdlhrTkZBYmZuSHlkUVRiMVRPZVA2ZG1ha3d4dWhjcUoKaFVONXVUYUs2dnhnMU1yeFh0S2g4dGRJeXBKZjJPRGlhQ0NEUTFnQkFvR0FaeFMvbmkwZjNNWTZ5V1VPc2p3aApsbWhxbHNlY0lhOVdFM2FPaFoxeTJQRWEwTksyRG9KVkZ4bWNzUFNqYkVrUktFRERXNjI5endtQzJRVlFaWWxPCkZYcXhaWXdnOEhKcEYvNmIvN3FzOU96QzltZ2FpRjFFYURSenNaZXRvWGsxZ29UY0dQWXlFZHNWY1ovQ0Uxb28KRDFPM2pyenFSM3QzeW9YM0x0OTBGdU09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
-  secret-key-base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGFxVG5FL0JvSFFmc0dBd25LcVFhS2Z5eldQczRwQWViVSAtbgo=
+  project-man-ecto-credential-secret: cnl6V1lCdFRYcS9hNlVVaUxuUWpGWGlTNUQzcC9IUzlHb3FMRzlxYmlzYkthL3BDeDcrUEFsMTJTWEEwSkU0dAo=
+  project-man-plugin-jwt-private-key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2UUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktjd2dnU2pBZ0VBQW9JQkFRREIvN01pamt4ZXFodWEKSkJINmdHYmNmQkYxSThETlpzM2ZWa0hpaWVQVmdpc2ZGUmRtK3pQYTlSb0hCdFVNcVdOcVIzZ2VQcnhrNkw4cgpIaExWVlZMazhOb0Z6c3k1UWtVRjc1bmhaRURZMEtIcGl1dTVpSWVENndLSE9CYVQ5NGhJRWRmV1NGdUVhY0JUCkpWMk1BaktyWWkzdmc2K21JWFBVaTVwdmRReEZjb0tQaFVYOS9VR3BUblMyR1hUZSt2VStzQWN0K1pHdTJsNm4KNUg1WllHZGV3VHpYSGI4UkFGQTBTbHY5TlFnallBV0NWWTA2andRMGxvZVo4NXI2eTdkYUxoY0J1eWRTVXhucQpjRDBVMWhINGRad1gxcXdGZEtJaFhvdGpHTnJqd25rUExKK0tML2ZZeFVnTExxZWN1R3c2LzFhNnlSdjhVRFJDCnlpY3FYZjc5QWdNQkFBRUNnZ0VBQnJwWVJlVUZ6S3luNjJjVks5NVljdUlSOVpiZXEyRHdMUzdWSWNiNEhLSDQKaVRTV2pLN3BPVTZSeEt6ekpqbHVVTFBDSnk1ZXplaHRKTkRVcjJCWHBuS2NqN2RWemV1alJZQkRQUmdESmJjZgo2UXBmMVhNMk1VTFh0Mi9MQjFPbzFCMnc5Mlg5Vjl0cnNrRXBVWW5oVHZueDJqZHpiU3dHS1M0SmxqNzFiMzBUCklpNkY2MkFjM0I3bWVMR21ZOTZBWFpvSGVEQ2dhalhXUEFrdGo5SGJ2eCtZVnlZS2FRTG4xei9tWmlkV1ByeFoKR09UZDVwUWVIN3FyZ0EwT0JqSG5pNy9WcmtmTjU5RURuQlA2WW54S2NhQ0ZwQXFsSzNTOU9XNTJNNXBxZnFxWApDQkorMlJyMUh3dU5VZUhxZGdNbHp5dUtaNnE0eXlFR3dWVGFLa3NsQVFLQmdRRDFBMExjWXYxdjl0STcrRWUrCkxBMnVJbjhHMmp3UUlnV3pRN29VR09vL0tuL083OEMvYThtbDNabkc4U281VjFPRTgrc1BwNElUR3RVUE1Tci8KMVdmdjMvdm02c3R0Q3RKRWZkM2E1d293eHZmc3BYNFp5aDRQVy9PdzRONGVucVBlLy9OY1UwUGN5RXVXeFF5QwpXTDRObnhlWVpRRnBDaHBONjREdUNLRzZmUUtCZ1FES3Nzem5nVWNEN0w2U2FDcGlvanRKMXR1WTdDbHF4MXFLCngzRzlTRnJmaWJuRHpFQWV0VHA1WE5Ic2s3UDFoRGNGbHBZSE9HQ2s1dFNjZHhBeUd0UXkrRWtLczE1MjFjVWUKRUNuMDN2aEkwNWhQNHorMklkRmhsajF5WHQ0ZXIwbDVmV0NlWEx1dlQyWmZQdVh3NzU4QlhqTEV3Q3NIVHIzVApUWXkvZ2VQK2dRS0JnUURjTVV3YmFGTkFGbUFtU1NHZ3hWS2VGcDUyZUJiV29OemltSkZZa25PaXhQMEw2dWdjCm9EQWZBcUs2NmUzNmpvS2V6OStHdUJIc1BZY1JHaXo4c3J1d0ZtbjZ3elNERU9DYmNVcTYranhzVGNSdVJ1U24KSk1BVEtaNCtiamp3NTcxNklpaUI1c3JzVm8yb04vcmdBZ1Q3bE9qTnFxaXp6OEtJR0loTVpER0V1UUtCZ0VGRgpzcFlhR3pRNFdHWHRCVGtkNU5teVJxVEg1ODVxdzgxTXpHT1htU3ZDdmY4L0ZxYk0xVGVmbkRvQ2xrREpncTVaCi81WHpvYXQ0YVo2NCtJNHA5WXMwU05FWlVhSVMxSmNKdlhrTkZBYmZuSHlkUVRiMVRPZVA2ZG1ha3d4dWhjcUoKaFVONXVUYUs2dnhnMU1yeFh0S2g4dGRJeXBKZjJPRGlhQ0NEUTFnQkFvR0FaeFMvbmkwZjNNWTZ5V1VPc2p3aApsbWhxbHNlY0lhOVdFM2FPaFoxeTJQRWEwTksyRG9KVkZ4bWNzUFNqYkVrUktFRERXNjI5endtQzJRVlFaWWxPCkZYcXhaWXdnOEhKcEYvNmIvN3FzOU96QzltZ2FpRjFFYURSenNaZXRvWGsxZ29UY0dQWXlFZHNWY1ovQ0Uxb28KRDFPM2pyenFSM3QzeW9YM0x0OTBGdU09Ci0tLS0tRU5EIFBSSVZBVEUgS0VZLS0tLS0K
+  project-man-api-secret-key-base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGFxVG5FL0JvSFFmc0dBd25LcVFhS2Z5eldQczRwQWViVSAtbgo=
+  plugin-api-secret-key-base: U2w3eW0va0RteEw3bWNaemtZN1MvekxFUDlZYmtwNGFxVG5FL0JvSFFmc0dBd25LcVFhS2Z5eldQczRwQWViVSAtbgo=
   trace-aware-database-url: ZWN0bzovL3Bvc3RncmVzOmNoYW5nZWl0QGpldC1wb3N0Z3Jlc3FsL3RyYWNlX2F3YXJlX3Byb2Q==
   project-man-database-url: ZWN0bzovL3Bvc3RncmVzOmNoYW5nZWl0QGpldC1wb3N0Z3Jlc3FsL3Byb2plY3RfbWFuX3Byb2Q==
-  dynamic-database-url: ZWN0bzovL3Bvc3RncmVzOmNoYW5nZWl0QGR5bmFtaWMtcG9zdGdyZXNxbC9keW5hbWljX3Byb2Q=
+  project-man-dynamic-database-url: ZWN0bzovL3Bvc3RncmVzOmNoYW5nZWl0QGR5bmFtaWMtcG9zdGdyZXNxbC9keW5hbWljX3Byb2Q=
 ```
 > 参数解释如下：
 > ```yaml
 > # 用于加密应用数据库密码的密钥（`openssl rand -base64 48`）
-> credential-secret: "AU27PtMelV3aojYkOgvYIJjnBoQ5gRhRFuYYOeLVZ8XbG7V3S8GRvSB0pT14qwpj"
+> project-man-ecto-credential-secret: "AU27PtMelV3aojYkOgvYIJjnBoQ5gRhRFuYYOeLVZ8XbG7V3S8GRvSB0pT14qwpj"
 > # Jet 用于签名 JWT 的 RSA 私钥
-> jet-jwt-private-key: "-----BEGIN PRIVATE KEY-----
+> project-man-plugin-jwt-private-key: "-----BEGIN PRIVATE KEY-----
 > MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDB/7Mijkxeqhua
 > JBH6gGbcfBF1I8DNZs3fVkHiiePVgisfFRdm+zPa9RoHBtUMqWNqR3gePrxk6L8r
 > HhLVVVLk8NoFzsy5QkUF75nhZEDY0KHpiuu5iIeD6wKHOBaT94hIEdfWSFuEacBT
@@ -140,13 +137,14 @@ data:
 > D1O3jrzqR3t3yoX3Lt90FuM=
 > -----END PRIVATE KEY-----"
 > # Phoenix 用于生成会话密码的密钥
-> secret-key-base: "Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU"
+> project-man-api-secret-key-base: "Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU"
+> plugin-api-secret-key-base: "Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU"
 > # Trace Aware 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
 > trace-aware-database-url: "ecto://postgres:changeit@jet-postgresql/trace_aware_prod"
 > # Jet 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
 > project-man-database-url: "ecto://postgres:changeit@jet-postgresql/project_man_prod"
 > # 项目数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
-> dynamic-database-url: "ecto://postgres:changeit@dynamic-postgresql/dynamic_prod"
+> project-man-dynamic-database-url: "ecto://postgres:changeit@dynamic-postgresql/dynamic_prod"
 > ```
 > :warning: 使用 base64 编码后填入 secret 资源文件对应 key 中
 
@@ -163,11 +161,6 @@ projectMan:
 breeze:
   image:
     repository: jet/breeze
-    pullPolicy: IfNotPresent
-    tag: "latest"
-traceAware:
-  image:
-    repository: jet/trace_aware
     pullPolicy: IfNotPresent
     tag: "latest"
 ```
@@ -190,9 +183,14 @@ projectMan:
     RELEASE_NODE: sname
     RELEASE_COOKIE: cookie
     # 项目数据库对外时的主机名
-    DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
+    PROJECT_MAN_DYNAMIC_REPO_EXPOSED_HOSTNAME: dynamic_prod
     # 项目数据库对外时的端口
-    DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    PROJECT_MAN_DYNAMIC_REPO_EXPOSED_PORT: "5432"
+    PROJECT_MAN_API_HOST: project_man
+    PLUGIN_API_HOST: project_man
+    # 决定 ecto 连接是否使用 IPv6
+    PROJECT_MAN_ECTO_IPV6: "false"
+    TRACE_AWARE_ECTO_IPV6: "false"
 ```
 
 ### 4. 设置访问的 `hosts`

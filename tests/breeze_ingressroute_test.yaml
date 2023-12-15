@@ -14,6 +14,9 @@ tests:
     asserts:
       - equal:
           path: spec.routes[0].middlewares[0].name
+          value: RELEASE-NAME-jet-helm-chart-strip-prefix
+      - equal:
+          path: spec.routes[0].middlewares[1].name
           value: RELEASE-NAME-jet-helm-chart-compress
 
   - it: should render web middleware append cors and strip-prefix
