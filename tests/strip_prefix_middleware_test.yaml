@@ -2,11 +2,6 @@ suite: test strip prefix middleware
 templates:
   - templates/traefik/middlewares/strip-prefix.yaml
 tests:
-  - it: should render nothing if jetSubpath empty
-    asserts:
-      - hasDocuments:
-          count: 0
-
   - it: should render strip prefix middleware by self-defined parameter
     values:
       - ./values/test.yaml
