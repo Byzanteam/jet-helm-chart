@@ -8,7 +8,7 @@ tests:
     asserts:
       - equal:
           path: spec.routes[0].match
-          value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet/jet`)
+          value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet/project_man`)
       - equal:
           path: spec.routes[1].match
           value: (Host(`jet.work`) || Host(`localhost`)) && PathPrefix(`/jet/plugin`)

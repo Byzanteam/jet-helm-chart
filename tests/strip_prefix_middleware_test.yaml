@@ -10,6 +10,6 @@ tests:
           path: spec.stripPrefix
           content:
             prefixes:
-              - /jet/jet
+              - /jet/project_man
               - /jet/plugin
               - /jet/breeze
