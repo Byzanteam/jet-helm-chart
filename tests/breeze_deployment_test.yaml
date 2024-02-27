@@ -3,11 +3,17 @@ templates:
   - templates/breeze/deployment.yaml
 tests:
   - it: should render deployment resource
+    set:
+      hosts:
+        - localhost
     asserts:
       - isKind:
           of: Deployment
 
   - it: should set name label, if nameOverride no override is set
+    set:
+      hosts:
+        - localhost
     asserts:
       - isSubset:
           path: spec.selector
@@ -19,6 +25,8 @@ tests:
 
   - it: should set name label, if set nameOverride
     set:
+      hosts:
+        - localhost
       nameOverride: unittest
     asserts:
       - isSubset:
@@ -39,6 +47,8 @@ tests:
 
   - it: should use exist image pull secret when set
     set:
+      hosts:
+        - localhost
       image:
         existingImageSecret: docker-registry-secret  
     asserts:

@@ -30,6 +30,10 @@ spec:
             - '0.0.0.0:50052'
             - '-r'
             - '0.0.0.0:2137'
+            - '--trace-aware-endpoint'
+            - 'http://{{ include "jet-helm-chart.fullname" . }}-project-man:50052'
+            - '-e'
+            - 'JET_BREEZE_HOST={{ empty $.Values.certificate | ternary "http" "https" }}://{{ index .Values.hosts 0 }}{{ .Values.ingressroute.subpath | default "" }}/breeze'
           envFrom:
             - configMapRef:
                 name: {{ include "jet-helm-chart.fullname" . }}-breeze-env
