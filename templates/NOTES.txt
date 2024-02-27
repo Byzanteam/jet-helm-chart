@@ -1,5 +1,5 @@
 Please visit the url:
-{{- $path := (.Values.jetSubpath | default "") }}
+{{- $path := (.Values.ingressroute.subpath | default "") }}
 {{- range $_, $host := .Values.hosts }}
 ProjectMan Api:
   {{ empty $.Values.certificate | ternary "http" "https" }}://{{ $host }}{{ $path }}/project_man/api/v1/
