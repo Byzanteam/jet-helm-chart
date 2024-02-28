@@ -32,12 +32,12 @@ spec:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: dependency-db-secret
+                  name: {{ .Values.projectmandb.auth.existingSecret }}
                   key: project-man-password
           command:
             - 'sh'
             - '-c'
-            - 'until psql -c "SELECT 1" "user=postgres dbname=project_man_prod host={{ .Values.projectmandb.fullnameOverride }}"; do echo waiting for project man db; sleep 2; done'
+            - 'until psql -c "SELECT 1" "user=postgres dbname=project_man_prod host={{ include "jet-helm-chart.projectManDB.fullname" . }}"; do echo waiting for project man db; sleep 2; done'
         {{- end }}
       containers:
         - name: {{ include "jet-helm-chart.fullname" . }}-project-man

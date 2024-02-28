@@ -50,3 +50,18 @@ app.kubernetes.io/name: {{ include "jet-helm-chart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{/*
+Porject man db service name
+*/}}
+{{- define "jet-helm-chart.projectManDB.fullname" -}}
+{{- if .Values.projectmandb.fullnameOverride -}}
+{{- .Values.projectmandb.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default .Chart.Name .Values.projectmandb.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
