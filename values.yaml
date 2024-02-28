@@ -82,8 +82,8 @@ backup: {}
 # project man db values
 projectmandb:
   enabled: false
-  fullnameOverride: jet-postgresql
-  nameOverride: jet-postgresql
+  fullnameOverride: ""
+  nameOverride: project-man-db
   architecture: standalone
   auth:
     database: postgres
@@ -136,8 +136,8 @@ projectmandb:
 # dynamic db values
 dynamicdb:
   enabled: false
-  fullnameOverride: dynamic-postgresql
-  nameOverride: dynamic-postgresql
+  fullnameOverride: ""
+  nameOverride: dynamic-db
   architecture: standalone
   auth:
     database: postgres

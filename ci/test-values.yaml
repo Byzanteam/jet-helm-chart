@@ -5,5 +5,7 @@ hosts:
   - example.com
 projectmandb:
   enabled: true
+  fullnameOverride: "project-man-db"
 dynamicdb:
   enabled: true
+  fullnameOverride: "dynamic-db"

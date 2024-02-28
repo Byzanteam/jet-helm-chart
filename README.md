@@ -107,7 +107,7 @@ data:
 > ```yaml
 > # 用于加密应用数据库密码的密钥（`openssl rand -base64 48`）
 > project-man-ecto-credential-secret: "AU27PtMelV3aojYkOgvYIJjnBoQ5gRhRFuYYOeLVZ8XbG7V3S8GRvSB0pT14qwpj"
-> # Jet 用于签名 JWT 的 RSA 私钥
+> # Jet 用于签名 JWT 的 RSA 私钥（`openssl genrsa 2048`）
 > project-man-plugin-jwt-private-key: "-----BEGIN PRIVATE KEY-----
 > MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDB/7Mijkxeqhua
 > JBH6gGbcfBF1I8DNZs3fVkHiiePVgisfFRdm+zPa9RoHBtUMqWNqR3gePrxk6L8r
@@ -136,11 +136,11 @@ data:
 > FXqxZYwg8HJpF/6b/7qs9OzC9mgaiF1EaDRzsZetoXk1goTcGPYyEdsVcZ/CE1oo
 > D1O3jrzqR3t3yoX3Lt90FuM=
 > -----END PRIVATE KEY-----"
-> # Phoenix 用于生成会话密码的密钥
+> # Phoenix 用于生成会话密码的密钥（`openssl rand -base64 48`）
 > project-man-api-secret-key-base: "Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU"
 > plugin-api-secret-key-base: "Sl7ym/kDmxL7mcZzkY7S/zLEP9Ybkp4aqTnE/BoHQfsGAwnKqQaKfyzWPs4pAebU"
 > # Trace Aware 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
-> trace-aware-database-url: "ecto://postgres:changeit@jet-postgresql/trace_aware_prod"
+> trace-aware-database-url: "ecto://postgres:changeit@jet-postgresql/project_man_prod"
 > # Jet 数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
 > project-man-database-url: "ecto://postgres:changeit@jet-postgresql/project_man_prod"
 > # 项目数据库连接地址,格式：ecto://USER:PASS@HOST/DATABASE
